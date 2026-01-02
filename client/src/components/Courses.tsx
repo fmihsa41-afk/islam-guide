@@ -11,6 +11,8 @@ import cover2 from '@assets/generated_images/mosque_silhouette_sunset_minimal.pn
 import quranCover from '@assets/Quran_1767336376737.jpg';
 // @ts-ignore
 import prophetCover from '@assets/prohpet_1767336455374.jpg';
+// @ts-ignore
+import prayerCover from '@assets/prayer_1767336536787.jpg';
 
 const courses = [
   {
@@ -23,7 +25,7 @@ const courses = [
   {
     title: "Prayer Guide",
     description: "Step-by-step guide to performing Salah perfectly.",
-    image: cover2,
+    image: prayerCover,
     lessons: 8,
     duration: "2h 15m"
   },
