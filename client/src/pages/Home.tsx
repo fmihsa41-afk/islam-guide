@@ -350,8 +350,16 @@ export default function Home() {
               className="fixed inset-0 z-[60] bg-background flex items-center justify-center text-center"
           >
               <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
-                <h1 className="text-6xl font-serif font-bold text-primary mb-4">Mubarak!</h1>
-                <p className="text-xl text-muted-foreground">Welcome to the Ummah.</p>
+                <LanguageCycler 
+                  customTranslations={[
+                    { lang: 'English', text: "Mubarak!\nWelcome to the Ummah." },
+                    { lang: 'Spanish', text: "¡Mubarak!\nBienvenido a la Ummah." },
+                    { lang: 'French', text: "Mubarak !\nBienvenue dans l'Oumma." },
+                    { lang: 'Russian', text: "Мубарак!\nДобро пожаловать в Умму." },
+                    { lang: 'German', text: "Mubarak!\nWillkommen in der Ummah." },
+                    { lang: 'Arabic', text: "مبارك!\nأهلاً بك في الأمة.", font: "font-arabic" }
+                  ]}
+                />
               </motion.div>
           </motion.div>
         )}
