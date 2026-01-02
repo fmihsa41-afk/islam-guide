@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ArrowRight } from 'lucide-react'
+import { Check, ArrowRight, MousePointer2 } from 'lucide-react'
 
 interface CongratulationsModalProps {
   onContinue: () => void
@@ -54,25 +54,35 @@ const translations = {
 
 export function CongratulationsModal({ onContinue }: CongratulationsModalProps) {
   const [langIndex, setLangIndex] = useState(0)
+  const [showMouse, setShowMouse] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
       setLangIndex((prev) => (prev + 1) % translations.heading.length)
     }, 1500)
-    return () => clearInterval(timer)
+    
+    // Show mouse after a short delay
+    const mouseTimer = setTimeout(() => {
+      setShowMouse(true)
+    }, 1500)
+
+    return () => {
+      clearInterval(timer)
+      clearTimeout(mouseTimer)
+    }
   }, [])
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
     >
       <motion.div
         initial={{ scale: 0.8, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ type: 'spring', duration: 0.6 }}
-        className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative overflow-hidden"
+        className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-gray-100 relative overflow-hidden"
       >
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-emerald-50 to-transparent -z-10" />
 
@@ -119,7 +129,7 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
 
         <button
           onClick={onContinue}
-          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 group"
+          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 group relative"
         >
           <AnimatePresence mode="wait">
             <motion.span
@@ -137,6 +147,22 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
             size={18}
             className="group-hover:translate-x-1 transition-transform"
           />
+
+          <AnimatePresence>
+            {showMouse && (
+              <motion.div 
+                className="absolute z-50 pointer-events-none"
+                initial={{ x: 100, y: 100, opacity: 0 }}
+                animate={{ x: 20, y: 20, opacity: 1, scale: [1, 0.8, 1] }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+                onAnimationComplete={() => {
+                  setTimeout(onContinue, 800);
+                }}
+              >
+                <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </button>
       </motion.div>
     </motion.div>
