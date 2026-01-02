@@ -13,7 +13,8 @@ interface ScholarChatProps {
 }
 
 const chatScript = [
-  { role: 'scholar', text: "Yes, Islam teaches that its message is for all people, regardless of background or culture." },
+  { role: 'user', text: "Do you think Islam is for everyone, even if they have made many mistakes?" },
+  { role: 'scholar', text: "Yes, Islam teaches that its message is for all people, regardless of their past. Allah's mercy is far greater than any mistake we can make." },
   { role: 'user', text: "What if someone believes in one God, Allah, and accepts Muhammad as His messenger—what does that mean?" },
   { role: 'scholar', text: "That means they accept the core belief of Islam. Entering Islam begins with sincerely declaring that belief." },
   { role: 'user', text: "I feel convinced and want to become a Muslim. What should I do?" },
