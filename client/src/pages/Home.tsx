@@ -8,6 +8,7 @@ import { LanguageCycler } from '@/components/LanguageCycler';
 import { ScholarChat } from '@/components/ScholarChat';
 import { CallScreen } from '@/components/CallScreen';
 import { Courses } from '@/components/Courses';
+import { CongratulationsModal } from '@/components/CongratulationsModal';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 type View = 'ai' | 'scholar' | 'courses';
@@ -343,25 +344,12 @@ export default function Home() {
         )}
         
         {showCongrats && (
-          <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] bg-background flex items-center justify-center text-center"
-          >
-              <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
-                <LanguageCycler 
-                  customTranslations={[
-                    { lang: 'English', text: "Mubarak!\nWelcome to the Ummah." },
-                    { lang: 'Spanish', text: "¡Mubarak!\nBienvenido a la Ummah." },
-                    { lang: 'French', text: "Mubarak !\nBienvenue dans l'Oumma." },
-                    { lang: 'Russian', text: "Мубарак!\nДобро пожаловать в Умму." },
-                    { lang: 'German', text: "Mubarak!\nWillkommen in der Ummah." },
-                    { lang: 'Arabic', text: "مبارك!\nأهلاً بك في الأمة.", font: "font-arabic" }
-                  ]}
-                />
-              </motion.div>
-          </motion.div>
+          <CongratulationsModal 
+            onContinue={() => {
+              setShowCongrats(false);
+              setActiveView('courses');
+            }} 
+          />
         )}
       </AnimatePresence>
     </div>
