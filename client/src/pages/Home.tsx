@@ -96,11 +96,8 @@ export default function Home() {
 
   const handleCallEnd = () => {
     setShowCall(false);
+    setActiveView('courses');
     setShowCongrats(true);
-    setTimeout(() => {
-      setShowCongrats(false);
-      setActiveView('courses');
-    }, 3000);
   };
 
   return (
