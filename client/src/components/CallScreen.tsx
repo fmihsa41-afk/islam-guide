@@ -14,11 +14,10 @@ export function CallScreen({ onEndCall }: CallScreenProps) {
   const [shahadahStep, setShahadahStep] = useState(0);
 
   useEffect(() => {
-    // Simulate the Shahadah recitation process
-    const timer1 = setTimeout(() => setShahadahStep(1), 1000); // Scholar speaks
-    const timer2 = setTimeout(() => setShahadahStep(2), 4000); // User repeats
-    const timer3 = setTimeout(() => setShahadahStep(3), 8000); // Finished
-    const timerEnd = setTimeout(() => onEndCall(), 10000);
+    const timer1 = setTimeout(() => setShahadahStep(1), 1000); 
+    const timer2 = setTimeout(() => setShahadahStep(2), 4000); 
+    const timer3 = setTimeout(() => setShahadahStep(3), 8000); 
+    const timerEnd = setTimeout(() => onEndCall(), 12000);
 
     return () => {
       clearTimeout(timer1);
@@ -29,54 +28,81 @@ export function CallScreen({ onEndCall }: CallScreenProps) {
   }, [onEndCall]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center text-white">
+    <div className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col items-center justify-center text-white">
+      <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
+      
       <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex flex-col items-center gap-8"
+        className="flex flex-col items-center gap-10 z-10"
       >
         <div className="relative">
-          <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse" />
-          <Avatar className="h-32 w-32 border-4 border-primary shadow-2xl z-10 relative">
+          <motion.div 
+            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+            className="absolute -inset-8 bg-primary rounded-full blur-3xl" 
+          />
+          <Avatar className="h-40 w-40 border-4 border-primary/50 shadow-2xl relative bg-zinc-900">
             <AvatarImage src={scholarAvatar} />
             <AvatarFallback>SA</AvatarFallback>
           </Avatar>
         </div>
 
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold font-serif">Scholar Ahmed</h2>
-          <p className="text-white/60">00:15</p>
+          <h2 className="text-3xl font-bold font-serif">Scholar Ahmed</h2>
+          <div className="flex items-center justify-center gap-2">
+            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            <p className="text-primary font-medium tracking-widest uppercase text-xs">Voice Call Active</p>
+          </div>
         </div>
 
-        <div className="h-24 flex items-center justify-center">
-            <motion.p 
+        <div className="min-h-[120px] px-6 text-center max-w-lg">
+            <motion.div 
                 key={shahadahStep}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="text-xl text-center max-w-md font-serif italic text-primary-foreground/90"
+                className="space-y-4"
             >
-                {shahadahStep === 0 && "Connecting..."}
-                {shahadahStep === 1 && "\"Ash-hadu an la ilaha illa Allah...\""}
-                {shahadahStep === 2 && "(Repeating) \"Ash-hadu an la ilaha illa Allah...\""}
-                {shahadahStep === 3 && "Mashallah! Welcome brother/sister."}
-            </motion.p>
+                {shahadahStep === 0 && <p className="text-zinc-400">Connecting to secure line...</p>}
+                
+                {shahadahStep === 1 && (
+                  <div className="space-y-2">
+                    <p className="text-primary-foreground/60 text-sm">Scholar recites:</p>
+                    <p className="text-2xl font-serif italic">"Ash-hadu an la ilaha illa Allah, wa ash-hadu anna Muhammadan rasulu Allah."</p>
+                  </div>
+                )}
+                
+                {shahadahStep === 2 && (
+                  <div className="space-y-2">
+                    <p className="text-primary-foreground/60 text-sm">User repeats:</p>
+                    <p className="text-2xl font-serif italic text-primary">"Ash-hadu an la ilaha illa Allah, wa ash-hadu anna Muhammadan rasulu Allah."</p>
+                  </div>
+                )}
+                
+                {shahadahStep === 3 && (
+                  <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="space-y-2">
+                    <p className="text-3xl font-bold text-primary">Allahu Akbar!</p>
+                    <p className="text-xl">Welcome to the family of Islam.</p>
+                  </motion.div>
+                )}
+            </motion.div>
         </div>
 
-        <div className="flex gap-6 mt-8">
-          <Button variant="secondary" size="icon" className="h-14 w-14 rounded-full bg-zinc-800 hover:bg-zinc-700 border-none">
+        <div className="flex gap-6 mt-10">
+          <Button variant="outline" size="icon" className="h-16 w-16 rounded-full bg-zinc-900 border-zinc-800 hover:bg-zinc-800">
             <Mic className="h-6 w-6" />
           </Button>
-          <Button variant="secondary" size="icon" className="h-14 w-14 rounded-full bg-zinc-800 hover:bg-zinc-700 border-none">
+          <Button variant="outline" size="icon" className="h-16 w-16 rounded-full bg-zinc-900 border-zinc-800 hover:bg-zinc-800">
             <Video className="h-6 w-6" />
           </Button>
           <Button 
             variant="destructive" 
             size="icon" 
-            className="h-14 w-14 rounded-full"
+            className="h-16 w-16 rounded-full shadow-2xl shadow-red-500/20"
             onClick={onEndCall}
           >
-            <PhoneOff className="h-6 w-6" />
+            <PhoneOff className="h-7 w-7" />
           </Button>
         </div>
       </motion.div>
