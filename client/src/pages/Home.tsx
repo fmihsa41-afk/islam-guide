@@ -348,26 +348,3 @@ export default function Home() {
     </div>
   );
 }
-
-      <AnimatePresence>
-        {showCall && (
-          <CallScreen onEndCall={handleCallEnd} />
-        )}
-        
-        {showCongrats && (
-          <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] bg-background flex items-center justify-center text-center"
-          >
-              <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
-                <h1 className="text-6xl font-serif font-bold text-primary mb-4">Mubarak!</h1>
-                <p className="text-xl text-muted-foreground">Welcome to the Ummah.</p>
-              </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
