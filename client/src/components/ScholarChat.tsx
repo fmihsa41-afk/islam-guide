@@ -18,7 +18,7 @@ const chatScript = [
   { role: 'user', text: "What if someone believes in one God, Allah, and accepts Muhammad as His messenger—what does that mean?" },
   { role: 'scholar', text: "That means they accept the core belief of Islam. Entering Islam begins with sincerely declaring that belief." },
   { role: 'user', text: "I feel convinced and want to become a Muslim. What should I do?" },
-  { role: 'scholar', text: "That’s a beautiful decision. If you’d like, we can join a call together so you can say the Shahadah (the declaration of faith) and officially become Muslim." }
+  { role: 'scholar', text: "That’s a beautiful decision. If you’d like, great, come up in a call lets say the Shahah" }
 ];
 
 export function ScholarChat({ onComplete }: ScholarChatProps) {
