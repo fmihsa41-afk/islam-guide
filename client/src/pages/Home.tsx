@@ -39,13 +39,18 @@ export default function Home() {
     if (!isAutoPlaying) return;
 
     const runScript = async () => {
-      // 1. User: What is Islam?
+      // 1. User: who created god
       await new Promise(r => setTimeout(r, 1500));
-      setMessages([{ role: 'user', content: "What is Islam?" }]);
+      setMessages([{ role: 'user', content: "who created god" }]);
       
       // 2. AI: Translation Cycle
       await new Promise(r => setTimeout(r, 1000));
-      setMessages(prev => [...prev, { role: 'ai', content: <LanguageCycler /> }]);
+      setMessages(prev => [...prev, { role: 'ai', content: <LanguageCycler 
+        customTranslations={[
+          { lang: 'English', text: "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
+          { lang: 'Arabic', text: "لا أحد خلق الله. تشرح الكتب أن الله أبدي وغير مخلوق ومستقل، بينما كل شيء آخر مخلوق ومعتمد عليه.", font: "font-arabic" }
+        ]}
+      /> }]);
 
       // 3. User: How do I become a Muslim?
       await new Promise(r => setTimeout(r, 8000)); // Wait for some translations
