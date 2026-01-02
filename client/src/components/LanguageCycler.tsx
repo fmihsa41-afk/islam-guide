@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const translations = [
+const defaultTranslations = [
   { lang: 'English', text: "Islam is a monotheistic religion that teaches belief in one God (Allah) and following His guidance as revealed to the Prophet Muhammad through the Qur’an." },
   { lang: 'Spanish', text: "El Islam es una religión monoteísta que enseña la creencia en un solo Dios (Allah) y el seguimiento de Su guía revelada al Profeta Muhammad a través del Corán." },
   { lang: 'French', text: "L'Islam est une religion monothéiste qui enseigne la croyance en un seul Dieu (Allah) et le suivi de Sa guidance révélée au Prophète Muhammad à travers le Coran." },
@@ -10,15 +10,20 @@ const translations = [
   { lang: 'Arabic', text: "الإسلام هو دين توحيدي يعلم الإيمان بإله واحد (الله) واتباع هديه كما نزل على النبي محمد من خلال القرآن الكريم.", font: "font-arabic" }
 ];
 
-export function LanguageCycler() {
+interface LanguageCyclerProps {
+  customTranslations?: typeof defaultTranslations;
+}
+
+export function LanguageCycler({ customTranslations }: LanguageCyclerProps) {
   const [index, setIndex] = useState(0);
+  const translations = customTranslations || defaultTranslations;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % translations.length);
     }, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [translations.length]);
 
   const current = translations[index];
 

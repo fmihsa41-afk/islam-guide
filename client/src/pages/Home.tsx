@@ -45,7 +45,19 @@ export default function Home() {
 
       // 4. AI: Connect message
       await new Promise(r => setTimeout(r, 1000));
-      setMessages(prev => [...prev, { role: 'ai', content: "We will connect you to our scholar." }]);
+      setMessages(prev => [...prev, { 
+        role: 'ai', 
+        content: <LanguageCycler 
+          customTranslations={[
+            { lang: 'English', text: "We will connect you to our scholar." },
+            { lang: 'Spanish', text: "Le conectaremos con nuestro erudito." },
+            { lang: 'French', text: "Nous allons vous mettre en contact avec notre érudit." },
+            { lang: 'Russian', text: "Мы соединим вас с нашим ученым." },
+            { lang: 'German', text: "Wir werden Sie mit unserem Gelehrten verbinden." },
+            { lang: 'Arabic', text: "سوف نقوم بتوصيلك بعالمنا.", font: "font-arabic" }
+          ]} 
+        /> 
+      }]);
 
       // 5. Show Connect Button with Animation
       await new Promise(r => setTimeout(r, 1000));
