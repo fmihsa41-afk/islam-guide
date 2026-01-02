@@ -13,6 +13,7 @@ type View = 'ai' | 'scholar' | 'courses';
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>('ai');
+  const [inputText, setInputText] = useState('');
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [messages, setMessages] = useState<{ role: 'user' | 'ai', content: any }[]>([]);
   const [showConnect, setShowConnect] = useState(false);
