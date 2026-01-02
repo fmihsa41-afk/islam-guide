@@ -65,7 +65,7 @@ export function Courses() {
           >
             <Star className="h-12 w-12 text-primary fill-primary" />
           </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold font-serif tracking-tight">Congratulations!</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-serif tracking-tight">Here we begin!</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Welcome to the family. Your journey of knowledge begins here.
           </p>
