@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Send, User, Bot, Phone } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, User, Bot, Phone, MousePointer2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -29,6 +29,7 @@ export function ScholarChat({ onComplete }: ScholarChatProps) {
   const [messages, setMessages] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
+  const [showCallMouse, setShowCallMouse] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,6 +47,12 @@ export function ScholarChat({ onComplete }: ScholarChatProps) {
         setCurrentIndex(prev => prev + 1);
       }, delay);
 
+      return () => clearTimeout(timer);
+    } else {
+      // Show mouse cursor after chat completes
+      const timer = setTimeout(() => {
+        setShowCallMouse(true);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [currentIndex]);
@@ -69,14 +76,31 @@ export function ScholarChat({ onComplete }: ScholarChatProps) {
             <p className="text-xs text-primary animate-pulse font-medium">Online • Ready to connect</p>
           </div>
         </div>
-        <Button 
-          variant="outline" 
-          size="icon" 
-          className="rounded-full h-12 w-12 border-primary/20 hover:bg-primary/5 text-primary"
-          onClick={onComplete}
-        >
-          <Phone className="h-6 w-6" />
-        </Button>
+        <div className="relative">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="rounded-full h-12 w-12 border-primary/20 hover:bg-primary/5 text-primary relative"
+            onClick={onComplete}
+          >
+            <Phone className="h-6 w-6" />
+          </Button>
+          <AnimatePresence>
+            {showCallMouse && (
+              <motion.div 
+                className="absolute z-50 pointer-events-none"
+                initial={{ x: 100, y: 100, opacity: 0 }}
+                animate={{ x: 10, y: 10, opacity: 1, scale: [1, 0.8, 1] }}
+                transition={{ duration: 1.5, times: [0, 0.8, 1] }}
+                onAnimationComplete={() => {
+                  setTimeout(onComplete, 500);
+                }}
+              >
+                <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       <ScrollArea className="flex-1 p-6">
