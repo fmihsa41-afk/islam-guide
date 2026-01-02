@@ -232,6 +232,36 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
+      {/* Input Area */}
+      {activeView === 'ai' && (
+          <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40">
+          <div className="max-w-3xl mx-auto relative">
+              <div className="relative">
+              <Input 
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Message all-Islam..." 
+                  className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
+              />
+              <Button 
+                  size="icon" 
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg"
+                  disabled={!inputText.trim()}
+                  onClick={() => {
+                    setMessages(prev => [...prev, { role: 'user', content: inputText }]);
+                    setInputText('');
+                  }}
+              >
+                  <Send className="w-4 h-4" />
+              </Button>
+              </div>
+              <div className="text-center mt-2 text-xs text-muted-foreground">
+              all-Islam can make mistakes. Consider checking important information.
+              </div>
+          </div>
+          </div>
+      )}
+
       {/* Global Overlays */}
       <AnimatePresence>
         {showCall && (
