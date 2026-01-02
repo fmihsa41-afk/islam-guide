@@ -41,9 +41,6 @@ export function LanguageCycler({ customTranslations }: LanguageCyclerProps) {
           {current.text}
         </motion.div>
       </AnimatePresence>
-      <div className="absolute -bottom-6 right-0 text-xs text-muted-foreground uppercase tracking-widest">
-        {current.lang}
-      </div>
     </div>
   );
 }
