@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 // @ts-ignore
-import cover1 from '@assets/generated_images/islamic_geometric_pattern_blue_gold.png';
+import cover1 from '@assets/image_1767335873225.png';
 // @ts-ignore
 import cover2 from '@assets/generated_images/mosque_silhouette_sunset_minimal.png';
 
