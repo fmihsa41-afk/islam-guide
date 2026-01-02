@@ -13,12 +13,14 @@ import quranCover from '@assets/Quran_1767336376737.jpg';
 import prophetCover from '@assets/prohpet_1767336455374.jpg';
 // @ts-ignore
 import prayerCover from '@assets/prayer_1767336536787.jpg';
+// @ts-ignore
+import tawheedCover from '@assets/tawheed_1767336638053.jpg';
 
 const courses = [
   {
     title: "Faith Essentials",
     description: "Understanding the 5 Pillars of Islam in depth.",
-    image: cover1,
+    image: tawheedCover,
     lessons: 12,
     duration: "4h 30m"
   },
