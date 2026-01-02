@@ -7,6 +7,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import cover1 from '@assets/image_1767335873225.png';
 // @ts-ignore
 import cover2 from '@assets/generated_images/mosque_silhouette_sunset_minimal.png';
+// @ts-ignore
+import quranCover from '@assets/Quran_1767336376737.jpg';
 
 const courses = [
   {
@@ -26,7 +28,7 @@ const courses = [
   {
     title: "Quranic Studies",
     description: "Introduction to reading and understanding the Quran.",
-    image: cover1,
+    image: quranCover,
     lessons: 20,
     duration: "10h 00m"
   },
