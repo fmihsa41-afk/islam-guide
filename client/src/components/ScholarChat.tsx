@@ -13,11 +13,6 @@ interface ScholarChatProps {
 }
 
 const chatScript = [
-  { role: 'user', text: "I’ve been curious about Islam and what it really teaches." },
-  { role: 'scholar', text: "Islam teaches belief in one God, Allah, living with purpose, and following Allah’s guidance as revealed in the Qur’an and through the Prophet Muhammad." },
-  { role: 'user', text: "Is Islam only about rules, or is there more to it?" },
-  { role: 'scholar', text: "It’s more than rules—it’s about faith, character, mercy, justice, prayer, and a personal relationship with Allah." },
-  { role: 'user', text: "Do you believe Islam is for everyone?" },
   { role: 'scholar', text: "Yes, Islam teaches that its message is for all people, regardless of background or culture." },
   { role: 'user', text: "What if someone believes in one God, Allah, and accepts Muhammad as His messenger—what does that mean?" },
   { role: 'scholar', text: "That means they accept the core belief of Islam. Entering Islam begins with sincerely declaring that belief." },
