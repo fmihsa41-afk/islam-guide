@@ -95,45 +95,47 @@ export default function Home() {
 
   return (
     <div className="flex h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden">
-      {/* Sidebar */}
-      <aside className="w-64 bg-secondary/30 border-r border-border/40 flex flex-col hidden md:flex">
-        <div className="p-4">
-          <Button variant="outline" className="w-full justify-start gap-2 border-border/60 hover:bg-secondary/50 rounded-lg py-5">
-            <Plus className="w-4 h-4" />
-            <span className="font-medium">New chat</span>
-          </Button>
-        </div>
-        
-        <ScrollArea className="flex-1 px-4">
-          <div className="space-y-4 py-4">
-            <div className="px-2">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Your chats</h3>
-              <div className="space-y-1">
-                {pastChats.map((chat, i) => (
-                  <button 
-                    key={i} 
-                    className="w-full text-left px-3 py-2 rounded-lg text-sm truncate hover:bg-secondary/50 transition-colors flex items-center gap-3 group"
-                  >
-                    <MessageCircle className="w-4 h-4 text-muted-foreground group-hover:text-foreground shrink-0" />
-                    <span className="truncate">{chat}</span>
-                  </button>
-                ))}
+      {/* Sidebar - only show when activeView is 'ai' */}
+      {activeView === 'ai' && (
+        <aside className="w-64 bg-secondary/30 border-r border-border/40 flex flex-col hidden md:flex">
+          <div className="p-4">
+            <Button variant="outline" className="w-full justify-start gap-2 border-border/60 hover:bg-secondary/50 rounded-lg py-5">
+              <Plus className="w-4 h-4" />
+              <span className="font-medium">New chat</span>
+            </Button>
+          </div>
+          
+          <ScrollArea className="flex-1 px-4">
+            <div className="space-y-4 py-4">
+              <div className="px-2">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Your chats</h3>
+                <div className="space-y-1">
+                  {pastChats.map((chat, i) => (
+                    <button 
+                      key={i} 
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm truncate hover:bg-secondary/50 transition-colors flex items-center gap-3 group"
+                    >
+                      <MessageCircle className="w-4 h-4 text-muted-foreground group-hover:text-foreground shrink-0" />
+                      <span className="truncate">{chat}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </ScrollArea>
+          </ScrollArea>
 
-        <div className="p-4 border-t border-border/40">
-           <div className="flex items-center gap-3 px-2 py-2">
-              <Avatar className="h-8 w-8 border">
-                <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">JD</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 overflow-hidden">
-                <p className="text-sm font-medium truncate">User Profile</p>
-              </div>
-           </div>
-        </div>
-      </aside>
+          <div className="p-4 border-t border-border/40">
+            <div className="flex items-center gap-3 px-2 py-2">
+                <Avatar className="h-8 w-8 border">
+                  <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">JD</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-sm font-medium truncate">User Profile</p>
+                </div>
+            </div>
+          </div>
+        </aside>
+      )}
 
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Header */}
