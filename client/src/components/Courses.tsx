@@ -65,7 +65,7 @@ export function Courses() {
           >
             <Star className="h-12 w-12 text-primary fill-primary" />
           </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold font-serif tracking-tight">Here we begin!</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-serif tracking-tight">Where you begin!</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-[17px]">Ibn Sirin said,
           “This knowledge is a religion, so consider from whom you receive your religion.”</p>
         </div>
