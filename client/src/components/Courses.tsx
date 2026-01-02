@@ -9,6 +9,8 @@ import cover1 from '@assets/image_1767335873225.png';
 import cover2 from '@assets/generated_images/mosque_silhouette_sunset_minimal.png';
 // @ts-ignore
 import quranCover from '@assets/Quran_1767336376737.jpg';
+// @ts-ignore
+import prophetCover from '@assets/prohpet_1767336455374.jpg';
 
 const courses = [
   {
@@ -35,7 +37,7 @@ const courses = [
   {
       title: "Life of Prophet Muhammad",
       description: "Learning from the Seerah of the final messenger.",
-      image: cover2,
+      image: prophetCover,
       lessons: 15,
       duration: "6h 45m"
   }
