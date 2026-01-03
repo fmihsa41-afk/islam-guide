@@ -231,10 +231,10 @@ export default function Home() {
                 exit={{ opacity: 0, x: 20 }}
                 className="h-full flex flex-col"
               >
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
-                  <div className="max-w-3xl mx-auto space-y-8 pb-32">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 flex flex-col items-center justify-center">
+                  <div className="max-w-3xl w-full space-y-8 pb-32">
                     {messages.length === 0 && !isTyping && (
-                      <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-6">
+                      <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
                           <motion.div 
                             animate={{ scale: [1, 1.1, 1] }} 
                             transition={{ repeat: Infinity, duration: 4 }}
@@ -258,7 +258,6 @@ export default function Home() {
                               opacity: 1, 
                               y: 0,
                               scale: isLast ? 1 : 0.98,
-                              filter: isLast ? 'blur(0px)' : 'blur(0.5px)'
                             }}
                             exit={{ opacity: 0, y: -50, scale: 0.9 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
