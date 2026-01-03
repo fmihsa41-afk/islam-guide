@@ -366,17 +366,14 @@ export default function Home() {
         </main>
 
         {activeView === 'ai' && (
-          <motion.div 
-            layout
-            className={`p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 ${messages.length === 0 ? 'absolute inset-0 flex items-center justify-center border-t-0 bg-transparent' : 'relative'}`}
-          >
+          <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 relative">
             <div className="max-w-3xl mx-auto relative flex gap-2 w-full">
               <div className="relative flex-1">
                 <Input 
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder={isScholarActive ? "Message Scholar Ahmed..." : "Message all-Islam..."} 
-                  className={`pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base ${messages.length === 0 ? 'h-16 text-lg' : ''}`}
+                  className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && inputText.trim()) {
                       addMessage('user', inputText);
@@ -427,7 +424,7 @@ export default function Home() {
                 all-Islam connects you with wisdom. Everything you need in one place.
               </div>
             )}
-          </motion.div>
+          </div>
         )}
       </div>
 
