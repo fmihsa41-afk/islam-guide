@@ -5,22 +5,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LanguageCycler } from '@/components/LanguageCycler';
-import { ScholarChat } from '@/components/ScholarChat';
 import { CallScreen } from '@/components/CallScreen';
 import { Courses } from '@/components/Courses';
 import { CongratulationsModal } from '@/components/CongratulationsModal';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-type View = 'ai' | 'scholar' | 'courses';
+type Role = 'user' | 'ai' | 'scholar';
+
+interface Message {
+  role: Role;
+  content: any;
+  id: string;
+}
+
+type View = 'ai' | 'courses';
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>('ai');
   const [inputText, setInputText] = useState('');
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai', content: any }[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [showConnect, setShowConnect] = useState(false);
   const [showCall, setShowCall] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
+  const [isScholarActive, setIsScholarActive] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +42,7 @@ export default function Home() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, showConnect]);
+  }, [messages, showConnect, isTyping]);
 
   // Autoplay Script
   useEffect(() => {
@@ -42,11 +51,11 @@ export default function Home() {
     const runScript = async () => {
       // 1. User: who created god
       await new Promise(r => setTimeout(r, 1500));
-      setMessages([{ role: 'user', content: "who created god" }]);
+      addMessage('user', "who created god");
       
       // 2. AI: Translation Cycle
       await new Promise(r => setTimeout(r, 1000));
-      setMessages(prev => [...prev, { role: 'ai', content: <LanguageCycler 
+      addMessage('ai', <LanguageCycler 
         customTranslations={[
           { lang: 'English', text: "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
           { lang: 'Spanish', text: "Nadie creó a Dios.\n\nLos libros explican que Alá es eterno, no creado e independiente, mientras que todo lo demás es creado y depende de Él. La creación en sí misma requiere un creador, pero el Creador no requiere uno.\n\nAlá es descrito como:\n- existiendo sin un principio,\n- no depende del tiempo, la materia o la causa,\n- y a diferencia de Su creación en todos los sentidos." },
@@ -55,27 +64,24 @@ export default function Home() {
           { lang: 'German', text: "Niemand hat Gott erschaffen.\n\nDie Bücher erklären, dass Allah ewig, unerschaffen und unabhängig ist, während alles andere erschaffen und von Ihm abhängig ist. Die Schöpfung selbst erfordert einen Schöpfer, aber der Schöpfer benötigt keinen.\n\nAllah wird beschrieben als:\n- existierend ohne Anfang,\n- nicht abhängig von Zeit, Materie oder Ursache,\n- und Seiner Schöpfung in jeder Hinsicht unähnlich." },
           { lang: 'Arabic', text: "لا أحد خلق الله.\n\nتشرح الكتب أن الله أبدي وغير مخلوق ومستقل، بينما كل شيء آخر مخلوق ومعتمد عليه. الخلق نفسه يتطلب خالقاً، لكن الخالق لا يتطلب خالقاً.\n\nيوصف الله بأنه:\n- موجود بلا بداية،\n- لا يعتمد على الوقت أو المادة أو السبب،\n- ولا يشبه خلقه بأي حال من الأحوال.", font: "font-arabic" }
         ]}
-      /> }]);
+      />);
 
       // 3. User: How do I become a Muslim?
-      await new Promise(r => setTimeout(r, 8000)); // Wait for some translations
-      setMessages(prev => [...prev, { role: 'user', content: "How do I become a Muslim?" }]);
+      await new Promise(r => setTimeout(r, 8000));
+      addMessage('user', "How do I become a Muslim?");
 
       // 4. AI: Connect message
       await new Promise(r => setTimeout(r, 1000));
-      setMessages(prev => [...prev, { 
-        role: 'ai', 
-        content: <LanguageCycler 
-          customTranslations={[
-            { lang: 'English', text: "We will connect you to our scholar." },
-            { lang: 'Spanish', text: "Le conectaremos con nuestro erudito." },
-            { lang: 'French', text: "Nous allons vous mettre en contact avec notre érudit." },
-            { lang: 'Russian', text: "Мы соединим вас с нашим ученым." },
-            { lang: 'German', text: "Wir werden Sie mit unserem Gelehrten verbinden." },
-            { lang: 'Arabic', text: " سنقوم بتوصيلك بالشيخ.", font: "font-arabic" }
-          ]} 
-        /> 
-      }]);
+      addMessage('ai', <LanguageCycler 
+        customTranslations={[
+          { lang: 'English', text: "We will connect you to our scholar." },
+          { lang: 'Spanish', text: "Le conectaremos con nuestro erudito." },
+          { lang: 'French', text: "Nous allons vous mettre en contact avec notre érudit." },
+          { lang: 'Russian', text: "Мы соединим вас с нашим ученым." },
+          { lang: 'German', text: "Wir werden Sie mit unserem Gelehrten verbinden." },
+          { lang: 'Arabic', text: " سنقوم بتوصيلك بالشيخ.", font: "font-arabic" }
+        ]} 
+      />);
 
       // 5. Show Connect Button with Animation
       await new Promise(r => setTimeout(r, 1000));
@@ -86,13 +92,40 @@ export default function Home() {
     setIsAutoPlaying(false);
   }, [isAutoPlaying]);
 
-  const handleConnectClick = () => {
-    setActiveView('scholar');
+  const addMessage = (role: Role, content: any) => {
+    setMessages(prev => {
+      const newMessage = { role, content, id: Math.random().toString(36).substr(2, 9) };
+      return [...prev, newMessage];
+    });
   };
 
-  const handleScholarComplete = () => {
-    setShowCall(true);
+  const handleConnectClick = async () => {
+    setShowConnect(false);
+    setIsScholarActive(true);
+    setIsTyping(true);
+    
+    // Scholar Greeting
+    await new Promise(r => setTimeout(r, 1500));
+    setIsTyping(false);
+    addMessage('scholar', "I am Scholar Ahmed with you. Peace be upon you! I've seen your interest in Islam and I'm here to help you on this beautiful journey.");
+    
+    // Auto-reply for user
+    await new Promise(r => setTimeout(r, 2000));
+    addMessage('user', "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?");
+    
+    // Scholar Response
+    await new Promise(r => setTimeout(r, 2000));
+    setIsTyping(true);
+    await new Promise(r => setTimeout(r, 1500));
+    setIsTyping(false);
+    addMessage('scholar', "Allah Akbar! That is a truly great decision. The best way to start is by declaring the Shahadah. If you'd like, let's start a call to recite it together.");
+    
+    // Show call button after small delay
+    await new Promise(r => setTimeout(r, 1000));
+    setShowCallTrigger(true);
   };
+
+  const [showCallTrigger, setShowCallTrigger] = useState(false);
 
   const handleCallEnd = () => {
     setShowCall(false);
@@ -102,7 +135,6 @@ export default function Home() {
 
   return (
     <div className="flex h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden">
-      {/* Sidebar - only show when activeView is 'ai' */}
       {activeView === 'ai' && (
         <aside className="w-64 bg-secondary/30 border-r border-border/40 flex flex-col hidden md:flex">
           <div className="p-4">
@@ -145,7 +177,6 @@ export default function Home() {
       )}
 
       <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Header */}
         <header className="p-4 flex items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0 z-40">
           <div className="flex items-center gap-2 font-semibold text-lg tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary md:hidden">
@@ -154,7 +185,6 @@ export default function Home() {
             <span className="font-serif">all-Islam</span>
           </div>
           
-          {/* Navigation Bar */}
           <nav className="flex items-center gap-1 bg-muted/50 p-1 rounded-xl">
             <Button 
               variant={activeView === 'ai' ? 'default' : 'ghost'} 
@@ -163,16 +193,7 @@ export default function Home() {
               onClick={() => setActiveView('ai')}
             >
               <Bot className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">AI</span>
-            </Button>
-            <Button 
-              variant={activeView === 'scholar' ? 'default' : 'ghost'} 
-              size="sm" 
-              className="rounded-lg"
-              onClick={() => setActiveView('scholar')}
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Scholar</span>
+              <span className="hidden sm:inline">AI & Scholar</span>
             </Button>
             <Button 
               variant={activeView === 'courses' ? 'default' : 'ghost'} 
@@ -188,7 +209,6 @@ export default function Home() {
           <div className="text-sm text-muted-foreground hidden md:block opacity-50">v1.0</div>
         </header>
 
-        {/* Main Content Area */}
         <main className="flex-1 overflow-hidden relative">
           <AnimatePresence mode="wait">
             {activeView === 'ai' && (
@@ -201,7 +221,7 @@ export default function Home() {
               >
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
                   <div className="max-w-3xl mx-auto space-y-8 pb-32">
-                    {messages.length === 0 && (
+                    {messages.length === 0 && !isTyping && (
                       <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-6">
                           <motion.div 
                             animate={{ scale: [1, 1.1, 1] }} 
@@ -211,31 +231,71 @@ export default function Home() {
                             <Sparkles className="w-8 h-8 text-primary-foreground" />
                           </motion.div>
                           <h1 className="text-4xl font-bold font-serif">Welcome to all-Islam</h1>
-                          <p className="text-muted-foreground">The AI is typing...</p>
+                          <p className="text-muted-foreground">Ask anything about Islam...</p>
                       </div>
                     )}
-                    {messages.map((msg, idx) => (
-                      <motion.div 
-                        key={idx}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                      >
-                        {msg.role === 'ai' && (
-                          <Avatar className="w-8 h-8 border">
-                            <AvatarFallback className="bg-primary text-primary-foreground"><Sparkles className="w-4 h-4" /></AvatarFallback>
-                          </Avatar>
-                        )}
-                        <div className={`max-w-[80%] ${msg.role === 'user' ? 'bg-muted px-4 py-3 rounded-2xl rounded-tr-none' : 'w-full'}`}>
-                          {msg.content}
+                    
+                    <AnimatePresence initial={false}>
+                      {messages.map((msg, idx) => {
+                        const isLast = idx === messages.length - 1;
+                        return (
+                          <motion.div 
+                            key={msg.id}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ 
+                              opacity: 1, 
+                              y: 0,
+                              scale: isLast ? 1 : 0.98,
+                              filter: isLast ? 'blur(0px)' : 'blur(0.5px)'
+                            }}
+                            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                          >
+                            {msg.role !== 'user' && (
+                              <Avatar className={`w-8 h-8 border ${msg.role === 'scholar' ? 'border-primary ring-2 ring-primary/20' : ''}`}>
+                                {msg.role === 'scholar' ? (
+                                  <>
+                                    <AvatarImage src="/attached_assets/warm_friendly_scholar_avatar.png" />
+                                    <AvatarFallback className="bg-primary text-primary-foreground font-bold">SA</AvatarFallback>
+                                  </>
+                                ) : (
+                                  <AvatarFallback className="bg-primary text-primary-foreground"><Sparkles className="w-4 h-4" /></AvatarFallback>
+                                )}
+                              </Avatar>
+                            )}
+                            <div className={`max-w-[85%] ${
+                              msg.role === 'user' 
+                                ? 'bg-muted px-4 py-3 rounded-2xl rounded-tr-none' 
+                                : msg.role === 'scholar'
+                                  ? 'bg-card border-2 border-primary/10 shadow-lg px-6 py-4 rounded-2xl rounded-tl-none font-serif text-lg'
+                                  : 'w-full'
+                            }`}>
+                              {msg.content}
+                            </div>
+                            {msg.role === 'user' && (
+                              <Avatar className="w-8 h-8 border">
+                                <AvatarFallback className="bg-muted-foreground/20"><User className="w-4 h-4" /></AvatarFallback>
+                              </Avatar>
+                            )}
+                          </motion.div>
+                        );
+                      })}
+                    </AnimatePresence>
+
+                    {isTyping && (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start gap-4">
+                        <Avatar className="w-8 h-8 border border-primary ring-2 ring-primary/20">
+                          <AvatarImage src="/attached_assets/warm_friendly_scholar_avatar.png" />
+                          <AvatarFallback className="bg-primary text-primary-foreground font-bold">SA</AvatarFallback>
+                        </Avatar>
+                        <div className="bg-muted rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"></span>
+                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                         </div>
-                        {msg.role === 'user' && (
-                          <Avatar className="w-8 h-8 border">
-                            <AvatarFallback className="bg-muted-foreground/20"><User className="w-4 h-4" /></AvatarFallback>
-                          </Avatar>
-                        )}
                       </motion.div>
-                    ))}
+                    )}
                     
                     {showConnect && (
                       <motion.div 
@@ -245,13 +305,13 @@ export default function Home() {
                       >
                           <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                  <Avatar className="h-10 w-10">
-                                      <AvatarFallback>SC</AvatarFallback>
-                                      <AvatarImage src="/assets/generated_images/warm_friendly_scholar_avatar.png" />
+                                  <Avatar className="h-10 w-10 border-2 border-primary">
+                                      <AvatarFallback>SA</AvatarFallback>
+                                      <AvatarImage src="/attached_assets/warm_friendly_scholar_avatar.png" />
                                   </Avatar>
                                   <div>
                                       <div className="font-semibold">Scholar Ahmed</div>
-                                      <div className="text-xs text-muted-foreground">Available for Chat</div>
+                                      <div className="text-xs text-muted-foreground">Ready to speak with you</div>
                                   </div>
                               </div>
                               <Button size="sm" onClick={handleConnectClick} className="relative overflow-hidden group">
@@ -271,21 +331,39 @@ export default function Home() {
                           </div>
                       </motion.div>
                     )}
+
+                    {showCallTrigger && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex justify-center"
+                      >
+                        <div className="relative">
+                          <Button 
+                            variant="default" 
+                            size="lg" 
+                            className="rounded-full h-16 w-16 bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20"
+                            onClick={() => setShowCall(true)}
+                          >
+                            <Phone className="h-8 w-8" />
+                          </Button>
+                          <motion.div 
+                            className="absolute z-50 pointer-events-none"
+                            initial={{ x: 100, y: 100, opacity: 0 }}
+                            animate={{ x: 20, y: 20, opacity: 1, scale: [1, 0.8, 1] }}
+                            transition={{ duration: 1.5, delay: 1 }}
+                            onAnimationComplete={() => {
+                              setTimeout(() => setShowCall(true), 1000);
+                            }}
+                          >
+                            <MousePointer2 className="h-8 w-8 text-black fill-white drop-shadow-md" />
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    )}
                     <div ref={messagesEndRef} />
                   </div>
                 </div>
-              </motion.div>
-            )}
-
-            {activeView === 'scholar' && (
-              <motion.div 
-                key="scholar-view"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="h-full p-4 md:p-8 overflow-y-auto"
-              >
-                <ScholarChat onComplete={handleScholarComplete} />
               </motion.div>
             )}
 
@@ -303,38 +381,42 @@ export default function Home() {
           </AnimatePresence>
         </main>
 
-        {/* Input Area */}
         {activeView === 'ai' && (
-            <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40">
+          <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40">
             <div className="max-w-3xl mx-auto relative">
-                <div className="relative">
+              <div className="relative">
                 <Input 
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Message all-Islam..." 
-                    className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder={isScholarActive ? "Message Scholar Ahmed..." : "Message all-Islam..."} 
+                  className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && inputText.trim()) {
+                      addMessage('user', inputText);
+                      setInputText('');
+                    }
+                  }}
                 />
                 <Button 
-                    size="icon" 
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg"
-                    disabled={!inputText.trim()}
-                    onClick={() => {
-                      setMessages(prev => [...prev, { role: 'user', content: inputText }]);
-                      setInputText('');
-                    }}
+                  size="icon" 
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg"
+                  disabled={!inputText.trim()}
+                  onClick={() => {
+                    addMessage('user', inputText);
+                    setInputText('');
+                  }}
                 >
-                    <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4" />
                 </Button>
-                </div>
-                <div className="text-center mt-2 text-xs text-muted-foreground">
-                all-Islam can make mistakes. Consider checking important information.
-                </div>
+              </div>
+              <div className="text-center mt-2 text-xs text-muted-foreground">
+                all-Islam connects you with wisdom. Everything you need in one place.
+              </div>
             </div>
-            </div>
+          </div>
         )}
       </div>
 
-      {/* Global Overlays */}
       <AnimatePresence>
         {showCall && (
           <CallScreen onEndCall={handleCallEnd} />
