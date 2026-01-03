@@ -9,6 +9,7 @@ import { CallScreen } from '@/components/CallScreen';
 import { Courses } from '@/components/Courses';
 import { CongratulationsModal } from '@/components/CongratulationsModal';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { LanguageSelector } from '@/components/LanguageSelector';
 
 type Role = 'user' | 'ai' | 'scholar';
 
@@ -18,7 +19,7 @@ interface Message {
   id: string;
 }
 
-type View = 'ai' | 'courses';
+type View = 'ai' | 'courses' | 'lang-select';
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>('ai');
@@ -92,6 +93,8 @@ export default function Home() {
     } else if (step === 6) {
       setShowCall(true);
       setStep(7);
+    } else if (step === 7) {
+      // Step 7 might be handled by CallEnd but we add a safety click logic here if needed
     }
   };
 
@@ -117,9 +120,17 @@ export default function Home() {
 
   const handleCallEnd = () => {
     setShowCall(false);
-    // Remove background page when showing congrats
+    setActiveView('lang-select');
+  };
+
+  const handleLanguageSelect = (lang: string) => {
     setActiveView(null as any); 
     setShowCongrats(true);
+  };
+
+  const handleCongratsContinue = () => {
+    setShowCongrats(false);
+    setActiveView('courses');
   };
 
   return (
@@ -307,6 +318,7 @@ export default function Home() {
                               <Button size="sm" onClick={(e) => {
                                 e.stopPropagation();
                                 handleConnectClick();
+                                setStep(6);
                               }} className="relative overflow-hidden group">
                                   Connect
                                   <motion.div 
@@ -339,6 +351,10 @@ export default function Home() {
                 <Courses />
               </motion.div>
             )}
+
+            {activeView === 'lang-select' && (
+              <LanguageSelector onSelect={handleLanguageSelect} />
+            )}
           </AnimatePresence>
         </main>
 
@@ -362,7 +378,8 @@ export default function Home() {
                   size="icon" 
                   className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg"
                   disabled={!inputText.trim()}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     addMessage('user', inputText);
                     setInputText('');
                   }}
@@ -380,6 +397,7 @@ export default function Home() {
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowCall(true);
+                      setStep(7);
                     }}
                   >
                     <Phone className="h-6 w-6" />
@@ -409,10 +427,7 @@ export default function Home() {
         
         {showCongrats && (
           <CongratulationsModal 
-            onContinue={() => {
-              setShowCongrats(false);
-              setActiveView('courses');
-            }} 
+            onContinue={handleCongratsContinue} 
           />
         )}
       </AnimatePresence>
