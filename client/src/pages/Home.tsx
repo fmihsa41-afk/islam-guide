@@ -86,6 +86,12 @@ export default function Home() {
     } else if (step === 4) {
       setShowConnect(true);
       setStep(5);
+    } else if (step === 5) {
+      handleConnectClick();
+      setStep(6);
+    } else if (step === 6) {
+      setShowCall(true);
+      setStep(7);
     }
   };
 
@@ -111,7 +117,8 @@ export default function Home() {
 
   const handleCallEnd = () => {
     setShowCall(false);
-    setActiveView('courses');
+    // Remove background page when showing congrats
+    setActiveView(null as any); 
     setShowCongrats(true);
   };
 
@@ -297,16 +304,16 @@ export default function Home() {
                                       <div className="text-xs text-muted-foreground">Ready to speak with you</div>
                                   </div>
                               </div>
-                              <Button size="sm" onClick={handleConnectClick} className="relative overflow-hidden group">
+                              <Button size="sm" onClick={(e) => {
+                                e.stopPropagation();
+                                handleConnectClick();
+                              }} className="relative overflow-hidden group">
                                   Connect
                                   <motion.div 
                                       className="absolute z-50 pointer-events-none"
                                       initial={{ x: 100, y: 100, opacity: 0 }}
                                       animate={{ x: 15, y: 15, opacity: 1, scale: [1, 0.8, 1] }}
                                       transition={{ duration: 1.5, delay: 1 }}
-                                      onAnimationComplete={() => {
-                                        setTimeout(handleConnectClick, 500);
-                                      }}
                                   >
                                       <MousePointer2 className="h-5 w-5 text-black fill-white drop-shadow-md" />
                                   </motion.div>
@@ -370,7 +377,10 @@ export default function Home() {
                     variant="default" 
                     size="icon"
                     className="h-[52px] w-[52px] rounded-2xl bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 shrink-0"
-                    onClick={() => setShowCall(true)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowCall(true);
+                    }}
                   >
                     <Phone className="h-6 w-6" />
                   </Button>
@@ -379,9 +389,6 @@ export default function Home() {
                     initial={{ x: 50, y: 50, opacity: 0 }}
                     animate={{ x: 10, y: 10, opacity: 1, scale: [1, 0.8, 1] }}
                     transition={{ duration: 1.5, delay: 1 }}
-                    onAnimationComplete={() => {
-                      setTimeout(() => setShowCall(true), 1000);
-                    }}
                   >
                     <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
                   </motion.div>

@@ -76,7 +76,7 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white"
     >
       <motion.div
         initial={{ scale: 0.8, opacity: 0, y: 20 }}
@@ -156,7 +156,7 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
                 animate={{ x: 20, y: 20, opacity: 1, scale: [1, 0.8, 1] }}
                 transition={{ duration: 1.5, delay: 0.5 }}
                 onAnimationComplete={() => {
-                  setTimeout(onContinue, 800);
+                  // No auto-continue
                 }}
               >
                 <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
