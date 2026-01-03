@@ -88,48 +88,49 @@ export default function Home() {
       setShowConnect(true);
       setStep(5);
     } else if (step === 5) {
-      handleConnectClick();
+      setShowConnect(false);
+      setIsScholarActive(true);
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+        addMessage('scholar', "I am Scholar Ahmed with you. Peace be upon you! I've seen your interest in Islam and I'm here to help you on this beautiful journey.");
+      }, 500);
       setStep(6);
     } else if (step === 6) {
-      setShowCall(true);
+      addMessage('user', "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?");
       setStep(7);
     } else if (step === 7) {
-      // Step 7 might be handled by CallEnd but we add a safety click logic here if needed
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+        addMessage('scholar', "Allah Akbar! That is a truly great decision. The best way to start is by declaring the Shahadah. If you'd like, let's start a call to recite it together.");
+        setShowCallTrigger(true);
+      }, 500);
+      setStep(8);
+    } else if (step === 8) {
+      if (showCallTrigger) {
+        setShowCall(true);
+        setStep(9);
+      }
     }
   };
 
-  const handleConnectClick = async () => {
-    setShowConnect(false);
-    setIsScholarActive(true);
-    setShowCallTrigger(true);
-    setIsTyping(true);
-    
-    await new Promise(r => setTimeout(r, 1500));
-    setIsTyping(false);
-    addMessage('scholar', "I am Scholar Ahmed with you. Peace be upon you! I've seen your interest in Islam and I'm here to help you on this beautiful journey.");
-    
-    await new Promise(r => setTimeout(r, 2000));
-    addMessage('user', "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?");
-    
-    await new Promise(r => setTimeout(r, 2000));
-    setIsTyping(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setIsTyping(false);
-    addMessage('scholar', "Allah Akbar! That is a truly great decision. The best way to start is by declaring the Shahadah. If you'd like, let's start a call to recite it together.");
+  const handleConnectClick = () => {
+    handleInteraction();
   };
 
   const handleCallEnd = () => {
     setShowCall(false);
-    setActiveView('lang-select');
-  };
-
-  const handleLanguageSelect = (lang: string) => {
     setActiveView(null as any); 
     setShowCongrats(true);
   };
 
   const handleCongratsContinue = () => {
     setShowCongrats(false);
+    setActiveView('lang-select');
+  };
+
+  const handleLanguageSelect = (lang: string) => {
     setActiveView('courses');
   };
 
@@ -318,7 +319,6 @@ export default function Home() {
                               <Button size="sm" onClick={(e) => {
                                 e.stopPropagation();
                                 handleConnectClick();
-                                setStep(6);
                               }} className="relative overflow-hidden group">
                                   Connect
                                   <motion.div 
@@ -397,7 +397,6 @@ export default function Home() {
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowCall(true);
-                      setStep(7);
                     }}
                   >
                     <Phone className="h-6 w-6" />
