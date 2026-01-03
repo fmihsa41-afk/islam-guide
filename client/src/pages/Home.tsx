@@ -231,8 +231,8 @@ export default function Home() {
                 exit={{ opacity: 0, x: 20 }}
                 className="h-full flex flex-col"
               >
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 flex flex-col items-center justify-center">
-                  <div className="max-w-3xl w-full space-y-8 pb-32">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 flex flex-col items-center">
+                  <div className="max-w-3xl w-full space-y-8 pb-32 flex-1 flex flex-col justify-center">
                     {messages.length === 0 && !isTyping && (
                       <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
                           <motion.div 
@@ -339,6 +339,27 @@ export default function Home() {
                               </Button>
                           </div>
                       </motion.div>
+                    )}
+
+                    {/* Chat bar positioned in the highlighted area */}
+                    {messages.length === 0 && !isScholarActive && (
+                      <div className="mt-8">
+                        <div className="relative max-w-2xl mx-auto">
+                          <Input 
+                            value={inputText}
+                            readOnly
+                            placeholder="Message all-Islam..." 
+                            className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base h-14"
+                          />
+                          <Button 
+                            size="icon" 
+                            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg"
+                            disabled
+                          >
+                            <Send className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
                     )}
 
                     <div ref={messagesEndRef} />
