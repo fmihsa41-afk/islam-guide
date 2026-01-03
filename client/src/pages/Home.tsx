@@ -55,7 +55,15 @@ export default function Home() {
 
   const handleInteraction = async () => {
     if (step === 0) {
-      addMessage('user', "who created god");
+      // Step 0: Type the first user message into the input bar
+      const firstMessage = "who created god";
+      for (let i = 0; i <= firstMessage.length; i++) {
+        setInputText(firstMessage.slice(0, i));
+        await new Promise(r => setTimeout(r, 50));
+      }
+      await new Promise(r => setTimeout(r, 500));
+      addMessage('user', firstMessage);
+      setInputText('');
       setStep(1);
     } else if (step === 1) {
       addMessage('ai', <LanguageCycler 
@@ -235,7 +243,7 @@ export default function Home() {
                             <Sparkles className="w-8 h-8 text-primary-foreground" />
                           </motion.div>
                           <h1 className="text-4xl font-bold font-serif">Welcome to all-Islam</h1>
-                          <p className="text-muted-foreground">Click anywhere to start the journey...</p>
+                          <p className="text-muted-foreground">Made in KSA to People</p>
                       </div>
                     )}
                     
@@ -359,14 +367,17 @@ export default function Home() {
         </main>
 
         {activeView === 'ai' && (
-          <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40">
-            <div className="max-w-3xl mx-auto relative flex gap-2">
+          <motion.div 
+            layout
+            className={`p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 ${messages.length === 0 ? 'absolute inset-0 flex items-center justify-center border-t-0 bg-transparent' : 'relative'}`}
+          >
+            <div className="max-w-3xl mx-auto relative flex gap-2 w-full">
               <div className="relative flex-1">
                 <Input 
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder={isScholarActive ? "Message Scholar Ahmed..." : "Message all-Islam..."} 
-                  className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
+                  className={`pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base ${messages.length === 0 ? 'h-16 text-lg' : ''}`}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && inputText.trim()) {
                       addMessage('user', inputText);
@@ -412,10 +423,12 @@ export default function Home() {
                 </div>
               )}
             </div>
-            <div className="text-center mt-2 text-xs text-muted-foreground max-w-3xl mx-auto">
-              all-Islam connects you with wisdom. Everything you need in one place.
-            </div>
-          </div>
+            {messages.length > 0 && (
+              <div className="text-center mt-2 text-xs text-muted-foreground max-w-3xl mx-auto">
+                all-Islam connects you with wisdom. Everything you need in one place.
+              </div>
+            )}
+          </motion.div>
         )}
       </div>
 
