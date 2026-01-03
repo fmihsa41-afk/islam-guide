@@ -95,13 +95,15 @@ export default function Home() {
   const addMessage = (role: Role, content: any) => {
     setMessages(prev => {
       const newMessage = { role, content, id: Math.random().toString(36).substr(2, 9) };
-      return [...prev, newMessage];
+      // Keep only the last message for the viewer
+      return [newMessage];
     });
   };
 
   const handleConnectClick = async () => {
     setShowConnect(false);
     setIsScholarActive(true);
+    setShowCallTrigger(true); // Call button appears as soon as scholar comes in
     setIsTyping(true);
     
     // Scholar Greeting
@@ -119,10 +121,6 @@ export default function Home() {
     await new Promise(r => setTimeout(r, 1500));
     setIsTyping(false);
     addMessage('scholar', "Allah Akbar! That is a truly great decision. The best way to start is by declaring the Shahadah. If you'd like, let's start a call to recite it together.");
-    
-    // Show call button after small delay
-    await new Promise(r => setTimeout(r, 1000));
-    setShowCallTrigger(true);
   };
 
   const [showCallTrigger, setShowCallTrigger] = useState(false);
@@ -267,9 +265,7 @@ export default function Home() {
                             <div className={`max-w-[85%] ${
                               msg.role === 'user' 
                                 ? 'bg-muted px-4 py-3 rounded-2xl rounded-tr-none' 
-                                : msg.role === 'scholar'
-                                  ? 'bg-card border-2 border-primary/10 shadow-lg px-6 py-4 rounded-2xl rounded-tl-none font-serif text-lg'
-                                  : 'w-full'
+                                : 'w-full'
                             }`}>
                               {msg.content}
                             </div>
