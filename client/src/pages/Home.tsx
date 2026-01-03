@@ -328,35 +328,6 @@ export default function Home() {
                       </motion.div>
                     )}
 
-                    {showCallTrigger && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-center"
-                      >
-                        <div className="relative">
-                          <Button 
-                            variant="default" 
-                            size="lg" 
-                            className="rounded-full h-16 w-16 bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20"
-                            onClick={() => setShowCall(true)}
-                          >
-                            <Phone className="h-8 w-8" />
-                          </Button>
-                          <motion.div 
-                            className="absolute z-50 pointer-events-none"
-                            initial={{ x: 100, y: 100, opacity: 0 }}
-                            animate={{ x: 20, y: 20, opacity: 1, scale: [1, 0.8, 1] }}
-                            transition={{ duration: 1.5, delay: 1 }}
-                            onAnimationComplete={() => {
-                              setTimeout(() => setShowCall(true), 1000);
-                            }}
-                          >
-                            <MousePointer2 className="h-8 w-8 text-black fill-white drop-shadow-md" />
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
                     <div ref={messagesEndRef} />
                   </div>
                 </div>
@@ -379,8 +350,8 @@ export default function Home() {
 
         {activeView === 'ai' && (
           <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40">
-            <div className="max-w-3xl mx-auto relative">
-              <div className="relative">
+            <div className="max-w-3xl mx-auto relative flex gap-2">
+              <div className="relative flex-1">
                 <Input 
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
@@ -405,9 +376,33 @@ export default function Home() {
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="text-center mt-2 text-xs text-muted-foreground">
-                all-Islam connects you with wisdom. Everything you need in one place.
-              </div>
+
+              {showCallTrigger && (
+                <div className="relative">
+                  <Button 
+                    variant="default" 
+                    size="icon"
+                    className="h-[52px] w-[52px] rounded-2xl bg-emerald-500 hover:bg-emerald-600 shadow-xl shadow-emerald-500/20 shrink-0"
+                    onClick={() => setShowCall(true)}
+                  >
+                    <Phone className="h-6 w-6" />
+                  </Button>
+                  <motion.div 
+                    className="absolute z-50 pointer-events-none"
+                    initial={{ x: 50, y: 50, opacity: 0 }}
+                    animate={{ x: 10, y: 10, opacity: 1, scale: [1, 0.8, 1] }}
+                    transition={{ duration: 1.5, delay: 1 }}
+                    onAnimationComplete={() => {
+                      setTimeout(() => setShowCall(true), 1000);
+                    }}
+                  >
+                    <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
+                  </motion.div>
+                </div>
+              )}
+            </div>
+            <div className="text-center mt-2 text-xs text-muted-foreground max-w-3xl mx-auto">
+              all-Islam connects you with wisdom. Everything you need in one place.
             </div>
           </div>
         )}

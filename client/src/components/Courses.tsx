@@ -3,12 +3,7 @@ import { BookOpen, Star, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LanguageCycler } from './LanguageCycler';
 
-// @ts-ignore
-import cover1 from '@assets/image_1767335873225.png';
-// @ts-ignore
-import cover2 from '@assets/generated_images/mosque_silhouette_sunset_minimal.png';
 // @ts-ignore
 import quranCover from '@assets/Quran_1767336376737.jpg';
 // @ts-ignore
@@ -21,14 +16,6 @@ import tawheedCover from '@assets/tawheed_1767336638053.jpg';
 const coursesData = [
   {
     title: "Faith Essentials",
-    titleTranslations: [
-      { lang: 'English', text: "Faith Essentials" },
-      { lang: 'Spanish', text: "Esenciales de la Fe" },
-      { lang: 'French', text: "Essentiels de la Foi" },
-      { lang: 'Russian', text: "Основы Веры" },
-      { lang: 'German', text: "Grundlagen des Glaubens" },
-      { lang: 'Arabic', text: "أساسيات الإيمان", font: "font-arabic" }
-    ],
     description: "Understanding the 5 Pillars of Islam in depth.",
     image: tawheedCover,
     lessons: 12,
@@ -36,14 +23,6 @@ const coursesData = [
   },
   {
     title: "Prayer Guide",
-    titleTranslations: [
-      { lang: 'English', text: "Prayer Guide" },
-      { lang: 'Spanish', text: "Guía de Oración" },
-      { lang: 'French', text: "Guide de Prière" },
-      { lang: 'Russian', text: "Руководство по Молитве" },
-      { lang: 'German', text: "Gebetsleitfaden" },
-      { lang: 'Arabic', text: "دليل الصلاة", font: "font-arabic" }
-    ],
     description: "Step-by-step guide to performing Salah perfectly.",
     image: prayerCover,
     lessons: 8,
@@ -51,14 +30,6 @@ const coursesData = [
   },
   {
     title: "Quranic Studies",
-    titleTranslations: [
-      { lang: 'English', text: "Quranic Studies" },
-      { lang: 'Spanish', text: "Estudios Coránicos" },
-      { lang: 'French', text: "Études Coraniques" },
-      { lang: 'Russian', text: "Изучение Корана" },
-      { lang: 'German', text: "Koranstudien" },
-      { lang: 'Arabic', text: "الدراسات القرآنية", font: "font-arabic" }
-    ],
     description: "Introduction to reading and understanding the Quran.",
     image: quranCover,
     lessons: 20,
@@ -66,14 +37,6 @@ const coursesData = [
   },
   {
     title: "Life of Prophet Muhammad",
-    titleTranslations: [
-      { lang: 'English', text: "Life of Prophet Muhammad" },
-      { lang: 'Spanish', text: "Vida del Profeta Muhammad" },
-      { lang: 'French', text: "Vie du Prophète Muhammad" },
-      { lang: 'Russian', text: "Жизнь Пророка Мухаммада" },
-      { lang: 'German', text: "Leben des Propheten Muhammad" },
-      { lang: 'Arabic', text: "سيرة النبي محمد", font: "font-arabic" }
-    ],
     description: "Learning from the Seerah of the final messenger.",
     image: prophetCover,
     lessons: 15,
@@ -99,30 +62,12 @@ export function Courses() {
           >
             <Star className="h-12 w-12 text-primary fill-primary" />
           </motion.div>
-          <div className="max-w-2xl mx-auto h-12">
-            <LanguageCycler 
-              customTranslations={[
-                { lang: 'English', text: "Where you begin!" },
-                { lang: 'Spanish', text: "¡Donde comienzas!" },
-                { lang: 'French', text: "Où vous commencez !" },
-                { lang: 'Russian', text: "Где вы начинаете!" },
-                { lang: 'German', text: "Wo du beginnst!" },
-                { lang: 'Arabic', text: "من هنا تبدأ!", font: "font-arabic" }
-              ]}
-            />
-          </div>
-          <div className="max-w-3xl mx-auto mt-8 min-h-[80px]">
-            <LanguageCycler 
-              customTranslations={[
-                { lang: 'English', text: "Ibn Sirin said, “This knowledge is a religion, so consider from whom you receive your religion.”" },
-                { lang: 'Spanish', text: "Ibn Sirin dijo: “Este conocimiento es una religión, así que considera de quién recibes tu religión”." },
-                { lang: 'French', text: "Ibn Sirin a dit : « Cette connaissance est une religion, alors considérez de qui vous recevez votre religion »." },
-                { lang: 'Russian', text: "Ибн Сирин сказал: «Эти знания — религия, поэтому смотрите, от кого вы принимаете свою религию»." },
-                { lang: 'German', text: "Ibn Sirin sagte: „Dieses Wissen ist eine Religion, also achte darauf, von wem du deine Religion annimmst.“" },
-                { lang: 'Arabic', text: "قال ابن سيرين: «إن هذا العلم دين، فانظروا عمن تأخذون دينكم».", font: "font-arabic" }
-              ]}
-            />
-          </div>
+          
+          <h1 className="text-4xl font-bold font-serif">Where you begin!</h1>
+          
+          <p className="max-w-2xl mx-auto text-muted-foreground italic">
+            Ibn Sirin said, “This knowledge is a religion, so consider from whom you receive your religion.”
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -142,11 +87,9 @@ export function Courses() {
                     className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <CardHeader className="min-h-[120px]">
-                  <div className="h-8">
-                    <LanguageCycler customTranslations={course.titleTranslations} />
-                  </div>
-                  <CardDescription className="mt-4">{course.description}</CardDescription>
+                <CardHeader>
+                  <CardTitle className="font-serif">{course.title}</CardTitle>
+                  <CardDescription className="mt-2">{course.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1">
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
