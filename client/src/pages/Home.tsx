@@ -23,20 +23,16 @@ type View = 'ai' | 'courses';
 export default function Home() {
   const [activeView, setActiveView] = useState<View>('ai');
   const [inputText, setInputText] = useState('');
-  const [isAutoPlaying, setIsAutoPlaying] = useState(false); // Default to false
   const [messages, setMessages] = useState<Message[]>([]);
   const [showConnect, setShowConnect] = useState(false);
   const [showCall, setShowCall] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
   const [isScholarActive, setIsScholarActive] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [showCallTrigger, setShowCallTrigger] = useState(false);
+  const [step, setStep] = useState(0);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const startDemo = () => {
-    if (isAutoPlaying) return;
-    setIsAutoPlaying(true);
-  };
 
   const pastChats = [
     "why is there evil?",
@@ -49,17 +45,18 @@ export default function Home() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, showConnect, isTyping]);
 
-  // Autoplay Script
-  useEffect(() => {
-    if (!isAutoPlaying) return;
+  const addMessage = (role: Role, content: any) => {
+    setMessages(prev => {
+      const newMessage = { role, content, id: Math.random().toString(36).substr(2, 9) };
+      return [newMessage];
+    });
+  };
 
-    const runScript = async () => {
-      // 1. User: who created god
-      await new Promise(r => setTimeout(r, 1500));
+  const handleInteraction = async () => {
+    if (step === 0) {
       addMessage('user', "who created god");
-      
-      // 2. AI: Translation Cycle
-      await new Promise(r => setTimeout(r, 1000));
+      setStep(1);
+    } else if (step === 1) {
       addMessage('ai', <LanguageCycler 
         customTranslations={[
           { lang: 'English', text: "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
@@ -70,13 +67,11 @@ export default function Home() {
           { lang: 'Arabic', text: "لا أحد خلق الله.\n\nتشرح الكتب أن الله أبدي وغير مخلوق ومستقل، بينما كل شيء آخر مخلوق ومعتمد عليه. الخلق نفسه يتطلب خالقاً، لكن الخالق لا يتطلب خالقاً.\n\nيوصف الله بأنه:\n- موجود بلا بداية،\n- لا يعتمد على الوقت أو المادة أو السبب،\n- ولا يشبه خلقه بأي حال من الأحوال.", font: "font-arabic" }
         ]}
       />);
-
-      // 3. User: How do I become a Muslim?
-      await new Promise(r => setTimeout(r, 8000));
+      setStep(2);
+    } else if (step === 2) {
       addMessage('user', "How do I become a Muslim?");
-
-      // 4. AI: Connect message
-      await new Promise(r => setTimeout(r, 1000));
+      setStep(3);
+    } else if (step === 3) {
       addMessage('ai', <LanguageCycler 
         customTranslations={[
           { lang: 'English', text: "We will connect you to our scholar." },
@@ -87,48 +82,32 @@ export default function Home() {
           { lang: 'Arabic', text: " سنقوم بتوصيلك بالشيخ.", font: "font-arabic" }
         ]} 
       />);
-
-      // 5. Show Connect Button with Animation
-      await new Promise(r => setTimeout(r, 1000));
+      setStep(4);
+    } else if (step === 4) {
       setShowConnect(true);
-    };
-
-    runScript();
-    setIsAutoPlaying(false);
-  }, [isAutoPlaying]);
-
-  const addMessage = (role: Role, content: any) => {
-    setMessages(prev => {
-      const newMessage = { role, content, id: Math.random().toString(36).substr(2, 9) };
-      // Keep only the last message for the viewer
-      return [newMessage];
-    });
+      setStep(5);
+    }
   };
 
   const handleConnectClick = async () => {
     setShowConnect(false);
     setIsScholarActive(true);
-    setShowCallTrigger(true); // Call button appears as soon as scholar comes in
+    setShowCallTrigger(true);
     setIsTyping(true);
     
-    // Scholar Greeting
     await new Promise(r => setTimeout(r, 1500));
     setIsTyping(false);
     addMessage('scholar', "I am Scholar Ahmed with you. Peace be upon you! I've seen your interest in Islam and I'm here to help you on this beautiful journey.");
     
-    // Auto-reply for user
     await new Promise(r => setTimeout(r, 2000));
     addMessage('user', "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?");
     
-    // Scholar Response
     await new Promise(r => setTimeout(r, 2000));
     setIsTyping(true);
     await new Promise(r => setTimeout(r, 1500));
     setIsTyping(false);
     addMessage('scholar', "Allah Akbar! That is a truly great decision. The best way to start is by declaring the Shahadah. If you'd like, let's start a call to recite it together.");
   };
-
-  const [showCallTrigger, setShowCallTrigger] = useState(false);
 
   const handleCallEnd = () => {
     setShowCall(false);
@@ -139,7 +118,7 @@ export default function Home() {
   return (
     <div 
       className="flex h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden"
-      onClick={startDemo}
+      onClick={handleInteraction}
     >
       {activeView === 'ai' && (
         <aside className="w-64 bg-secondary/30 border-r border-border/40 flex flex-col hidden md:flex">
@@ -237,7 +216,7 @@ export default function Home() {
                             <Sparkles className="w-8 h-8 text-primary-foreground" />
                           </motion.div>
                           <h1 className="text-4xl font-bold font-serif">Welcome to all-Islam</h1>
-                          <p className="text-muted-foreground">Ask anything about Islam...</p>
+                          <p className="text-muted-foreground">Click anywhere to start the journey...</p>
                       </div>
                     )}
                     
