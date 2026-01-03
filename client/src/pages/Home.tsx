@@ -23,7 +23,7 @@ type View = 'ai' | 'courses';
 export default function Home() {
   const [activeView, setActiveView] = useState<View>('ai');
   const [inputText, setInputText] = useState('');
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false); // Default to false
   const [messages, setMessages] = useState<Message[]>([]);
   const [showConnect, setShowConnect] = useState(false);
   const [showCall, setShowCall] = useState(false);
@@ -32,6 +32,11 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const startDemo = () => {
+    if (isAutoPlaying) return;
+    setIsAutoPlaying(true);
+  };
 
   const pastChats = [
     "why is there evil?",
@@ -132,7 +137,10 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden">
+    <div 
+      className="flex h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden"
+      onClick={startDemo}
+    >
       {activeView === 'ai' && (
         <aside className="w-64 bg-secondary/30 border-r border-border/40 flex flex-col hidden md:flex">
           <div className="p-4">
