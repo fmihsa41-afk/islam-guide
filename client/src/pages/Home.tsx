@@ -343,13 +343,17 @@ export default function Home() {
 
                     {/* Chat bar positioned in the highlighted area */}
                     {messages.length === 0 && !isScholarActive && (
-                      <div className="mt-8">
+                      <motion.div 
+                        layoutId="chat-bar"
+                        className="mt-8 w-full z-50"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      >
                         <div className="relative max-w-2xl mx-auto">
                           <Input 
                             value={inputText}
                             readOnly
                             placeholder="Message all-Islam..." 
-                            className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base h-14"
+                            className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base h-14 bg-background"
                           />
                           <Button 
                             size="icon" 
@@ -359,7 +363,7 @@ export default function Home() {
                             <Send className="w-4 h-4" />
                           </Button>
                         </div>
-                      </div>
+                      </motion.div>
                     )}
 
                     <div ref={messagesEndRef} />
@@ -386,8 +390,12 @@ export default function Home() {
           </AnimatePresence>
         </main>
 
-        {activeView === 'ai' && (
-          <div className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 relative">
+        {activeView === 'ai' && messages.length > 0 && (
+          <motion.div 
+            layoutId="chat-bar"
+            className="p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 relative"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
             <div className="max-w-3xl mx-auto relative flex gap-2 w-full">
               <div className="relative flex-1">
                 <Input 
@@ -445,7 +453,7 @@ export default function Home() {
                 all-Islam connects you with wisdom. Everything you need in one place.
               </div>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
 
