@@ -25,10 +25,10 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const pastChats = [
-    "where is god",
-    "is islam aganist women",
-    "does islam like violence",
-    "who created god if he created us"
+    "why is there evil?",
+    "is islam aganist women?",
+    "islam support violence?",
+    "who created god?"
   ];
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function Home() {
             { lang: 'French', text: "Nous allons vous mettre en contact avec notre érudit." },
             { lang: 'Russian', text: "Мы соединим вас с нашим ученым." },
             { lang: 'German', text: "Wir werden Sie mit unserem Gelehrten verbinden." },
-            { lang: 'Arabic', text: "سوف نقوم بتوصيلك بعالمنا.", font: "font-arabic" }
+            { lang: 'Arabic', text: " سنقوم بتوصيلك بالشيخ.", font: "font-arabic" }
           ]} 
         /> 
       }]);
@@ -137,7 +137,7 @@ export default function Home() {
                   <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">JD</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 overflow-hidden">
-                  <p className="text-sm font-medium truncate">User Profile</p>
+                  <p className="text-sm font-medium truncate">John Madison</p>
                 </div>
             </div>
           </div>

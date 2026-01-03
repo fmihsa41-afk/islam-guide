@@ -13,12 +13,8 @@ interface ScholarChatProps {
 }
 
 const chatScript = [
-  { role: 'user', text: "Do you think Islam is for everyone, even if they have made many mistakes?" },
-  { role: 'scholar', text: "Yes, Islam teaches that its message is for all people, regardless of their past. Allah's mercy is far greater than any mistake we can make." },
-  { role: 'user', text: "What if someone believes in one God, Allah, and accepts Muhammad as His messenger—what does that mean?" },
-  { role: 'scholar', text: "That means they accept the core belief of Islam. Entering Islam begins with sincerely declaring that belief." },
-  { role: 'user', text: "I feel convinced and want to become a Muslim. What should I do?" },
-  { role: 'scholar', text: "That’s a beautiful decision. If you’d like, great, come up in a call lets say the Shahah" }
+  { role: 'user', text: " I have talked to the Ai chat and I am convinced with Islam. How do I become a Muslim?" },
+  { role: 'scholar', text: " Allah Akbar a great decision! If you’d like, come up in a call lets say the Shahadh " }
 ];
 
 export function ScholarChat({ onComplete }: ScholarChatProps) {
