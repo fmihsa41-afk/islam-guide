@@ -247,20 +247,20 @@ export default function Home() {
                       </div>
                     )}
                     
-                    <AnimatePresence initial={false}>
+                    <AnimatePresence initial={false} mode="popLayout">
                       {messages.map((msg, idx) => {
                         const isLast = idx === messages.length - 1;
                         return (
                           <motion.div 
                             key={msg.id}
-                            initial={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ 
                               opacity: 1, 
                               y: 0,
-                              scale: isLast ? 1 : 0.98,
+                              scale: 1,
                             }}
-                            exit={{ opacity: 0, y: -50, scale: 0.9 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
                             className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                           >
                             {msg.role !== 'user' && (

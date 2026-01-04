@@ -28,15 +28,15 @@ export function LanguageCycler({ customTranslations }: LanguageCyclerProps) {
   const current = translations[index];
 
   return (
-    <div className="min-h-[100px] relative">
+    <div className="min-h-[100px] flex items-start gap-4">
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.5 }}
-          className={`text-lg leading-relaxed ${current.font || 'font-sans'}`}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.3 }}
+          className={`text-lg leading-relaxed flex-1 ${current.font || 'font-sans'}`}
         >
           {current.text}
         </motion.div>
