@@ -66,16 +66,27 @@ export default function Home() {
       setInputText('');
       setStep(1);
     } else if (step === 1) {
-      addMessage('ai', <LanguageCycler 
-        customTranslations={[
-          { lang: 'English', text: "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
-          { lang: 'Spanish', text: "Nadie creó a Dios.\n\nLos libros explican que Alá es eterno, no creado e independiente, mientras que todo lo demás es creado y depende de Él. La creación en sí misma requiere un creador, pero el Creador no requiere uno.\n\nAlá es descrito como:\n- existiendo sin un principio,\n- no depende del tiempo, la materia o la causa,\n- y a diferencia de Su creación en todos los sentidos." },
-          { lang: 'French', text: "Personne n'a créé Dieu.\n\nLes livres expliquent qu'Allah est éternel, incréé et indépendant, tandis que tout le reste est créé et dépend de Lui. La création elle-même nécessite un créateur, mais le Créateur n'en nécessite pas.\n\nAllah est décrit como:\n- existant sans commencement,\n- ne dépendant pas du temps, de la matière ou de la cause,\n- et différent de Sa création à tous égards." },
-          { lang: 'Russian', text: "Никто не создавал Бога.\n\nВ книгах объясняется, что Аллах вечен, несотворен и независим, в то время как все остальное сотворено и зависит от Него. Само творение требует создателя, но Создатель в нем не нуждается.\n\nАллах описывается как:\n- существующий без начала,\n- не зависящий от времени, материи или причины,\n- и не похожий на Свое творение во всех отношениях." },
-          { lang: 'German', text: "Niemand hat Gott erschaffen.\n\nDie Bücher erklären, dass Allah ewig, unerschaffen und unabhängig ist, während alles andere erschaffen und von Ihm abhängig ist. Die Schöpfung selbst erfordert einen Schöpfer, aber der Schöpfer benötigt keinen.\n\nAllah wird beschrieben als:\n- existierend ohne Anfang,\n- nicht abhängig von Zeit, Materie oder Ursache,\n- und Seiner Schöpfung in jeder Hinsicht unähnlich." },
-          { lang: 'Arabic', text: "لا أحد خلق الله.\n\nتشرح الكتب أن الله أبدي وغير مخلوق ومستقل، بينما كل شيء آخر مخلوق ومعتمد عليه. الخلق نفسه يتطلب خالقاً، لكن الخالق لا يتطلب خالقاً.\n\nيوصف الله بأنه:\n- موجود بلا بداية،\n- لا يعتمد على الوقت أو المادة أو السبب،\n- ولا يشبه خلقه بأي حال من الأحوال.", font: "font-arabic" }
-        ]}
-      />);
+      addMessage('ai', (
+        <div className="space-y-4">
+          <p className="text-muted-foreground italic text-sm border-l-2 border-primary/20 pl-3">
+            Peace be upon you! I will assist you with answers until our scholar joins the conversation. 
+            Please note that my current responses are not yet certified.
+          </p>
+          <LanguageCycler 
+            customTranslations={[
+              { lang: 'English', text: "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
+              { lang: 'Spanish', text: "Nadie creó a Dios.\n\nLos libros explican que Alá es eterno, no creado e independiente, mientras que todo lo demás es creado y depende de Él. La creación en sí misma requiere un creador, pero el Creador no requiere uno.\n\nAlá es descrito como:\n- existiendo sin un principio,\n- no depende del tiempo, la materia o la causa,\n- y a diferencia de Su creación en todos los sentidos." },
+              { lang: 'French', text: "Personne n'a créé Dieu.\n\nLes livres expliquent qu'Allah est éternel, incréé et indépendant, tandis que tout le reste est créé et dépend de Lui. La création elle-même nécessite un créateur, mais le Créateur n'en nécessite pas.\n\nAllah est décrit como:\n- existant sans commencement,\n- ne dépendant pas du temps, de la matière ou de la cause,\n- et différent de Sa création à tous égards." },
+              { lang: 'Russian', text: "Никто не создавал Бога.\n\nВ книгах объясняется, что Аллах вечен, несотворен и независим, в то время как все остальное сотворено и зависит от Него. Само творение требует создателя, но Создатель в нем не нуждается.\n\nАллах описывается как:\n- существующий без начала,\n- не зависящий от времени, материи или причины,\n- и не похожий на Свое творение во всех отношениях." },
+              { lang: 'German', text: "Niemand hat Gott erschaffen.\n\nDie Bücher erklären, dass Allah ewig, unerschaffen und unabhängig ist, während alles andere erschaffen und von Ihm abhängig ist. Die Schöpfung selbst erfordert einen Schöpfer, aber der Schöpfer benötigt keinen.\n\nAllah wird beschrieben als:\n- existierend ohne Anfang,\n- nicht abhängig von Zeit, Materie oder Ursache,\n- und Seiner Schöpfung in jeder Hinsicht unähnlich." },
+              { lang: 'Arabic', text: "لا أحد خلق الله.\n\nتشرح الكتب أن الله أبدي وغير مخلوق ومستقل، بينما كل شيء آخر مخلوق ومعتمد عليه. الخلق نفسه يتطلب خالقاً، لكن الخالق لا يتطلب خالقاً.\n\nيوصف الله بأنه:\n- موجود بلا بداية،\n- لا يعتمد على الوقت أو المادة أو السبب،\n- ولا يشبه خلقه بأي حال من الأحوال.", font: "font-arabic" }
+            ]}
+          />
+          <p className="text-[10px] text-red-500 font-medium animate-pulse">
+            waiting for scholar to certify the answer
+          </p>
+        </div>
+      ));
       setStep(2);
     } else if (step === 2) {
       addMessage('user', "How do I become a Muslim?");
