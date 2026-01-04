@@ -100,15 +100,6 @@ export default function Home() {
                          setIsEditedAndCertified(true);
                       }
                       setScholarEditMode(false);
-                      // Update the message content to show the result
-                      setMessages(prev => {
-                        const newMsgs = [...prev];
-                        const aiMsg = newMsgs.find(m => m.role === 'ai');
-                        if (aiMsg) {
-                          // Force a re-render by updating the message list
-                        }
-                        return [...newMsgs];
-                      });
                     }}
                   >
                     <Check className="h-5 w-5" />
