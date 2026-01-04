@@ -119,12 +119,7 @@ export default function Home() {
               >
                 <LanguageCycler 
                   customTranslations={[
-                    { lang: 'English', text: scholarEditedText || "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
-                    { lang: 'Spanish', text: "Nadie creó a Dios..." },
-                    { lang: 'French', text: "Personne n'a créé Dieu..." },
-                    { lang: 'Russian', text: "Никто не создавал Бога..." },
-                    { lang: 'German', text: "Niemand hat Gott erschaffen..." },
-                    { lang: 'Arabic', text: "لا أحد خلق الله...", font: "font-arabic" }
+                    { lang: 'English', text: scholarEditedText || "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." }
                   ]}
                 />
                 {activeUser.name === 'Scholar Ahmed' && !isCertified && !isEditedAndCertified && !scholarEditMode && (
@@ -168,12 +163,7 @@ export default function Home() {
     } else if (step === 3) {
       addMessage('ai', <LanguageCycler 
         customTranslations={[
-          { lang: 'English', text: "We will connect you to our scholar." },
-          { lang: 'Spanish', text: "Le conectaremos con nuestro erudito." },
-          { lang: 'French', text: "Nous allons vous mettre en contact avec notre érudit." },
-          { lang: 'Russian', text: "Мы соединим вас с нашим ученым." },
-          { lang: 'German', text: "Wir werden Sie mit unserem Gelehrten verbinden." },
-          { lang: 'Arabic', text: " سنقوم بتوصيلك بالشيخ.", font: "font-arabic" }
+          { lang: 'English', text: "We will connect you to our scholar." }
         ]} 
       />);
       setStep(4);

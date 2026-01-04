@@ -15,32 +15,14 @@ interface LanguageCyclerProps {
 }
 
 export function LanguageCycler({ customTranslations }: LanguageCyclerProps) {
-  const [index, setIndex] = useState(0);
   const translations = customTranslations || defaultTranslations;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % translations.length);
-    }, 1500);
-    return () => clearInterval(interval);
-  }, [translations.length]);
-
-  const current = translations[index];
+  const current = translations[0]; // Always use English
 
   return (
     <div className="min-h-[100px] flex items-start gap-4">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -10 }}
-          transition={{ duration: 0.3 }}
-          className={`text-lg leading-relaxed flex-1 ${current.font || 'font-sans'}`}
-        >
-          {current.text}
-        </motion.div>
-      </AnimatePresence>
+      <div className={`text-lg leading-relaxed flex-1 ${current.font || 'font-sans'}`}>
+        {current.text}
+      </div>
     </div>
   );
 }
