@@ -158,7 +158,15 @@ export default function Home() {
       setActiveUser({ name: 'Scholar Ahmed', avatar: '/attached_assets/warm_friendly_scholar_avatar.png', role: 'SA' });
     } else if (step === 2) {
       if (!isCertified && !isEditedAndCertified) return; // Wait for scholar to certify
-      addMessage('user', "How do I become a Muslim?");
+      
+      const nextUserMessage = "How do I become a Muslim?";
+      for (let i = 0; i <= nextUserMessage.length; i++) {
+        setInputText(nextUserMessage.slice(0, i));
+        await new Promise(r => setTimeout(r, 50));
+      }
+      await new Promise(r => setTimeout(r, 500));
+      addMessage('user', nextUserMessage);
+      setInputText('');
       setStep(3);
     } else if (step === 3) {
       addMessage('ai', <LanguageCycler 
@@ -180,7 +188,14 @@ export default function Home() {
       }, 500);
       setStep(6);
     } else if (step === 6) {
-      addMessage('user', "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?");
+      const nextUserMessage = "I have talked to the AI chat and I am convinced with Islam. How do I become a Muslim?";
+      for (let i = 0; i <= nextUserMessage.length; i++) {
+        setInputText(nextUserMessage.slice(0, i));
+        await new Promise(r => setTimeout(r, 50));
+      }
+      await new Promise(r => setTimeout(r, 500));
+      addMessage('user', nextUserMessage);
+      setInputText('');
       setStep(7);
     } else if (step === 7) {
       setIsTyping(true);
