@@ -100,6 +100,7 @@ export default function Home() {
                          setIsEditedAndCertified(true);
                       }
                       setScholarEditMode(false);
+                      setStep(2);
                     }}
                   >
                     <Check className="h-5 w-5" />
@@ -153,8 +154,6 @@ export default function Home() {
           )}
         </div>
       ));
-      setStep(2);
-      // Change user to Scholar Ahmed
       setActiveUser({ name: 'Scholar Ahmed', avatar: '/attached_assets/warm_friendly_scholar_avatar.png', role: 'SA' });
     } else if (step === 2) {
       if (!isCertified && !isEditedAndCertified) return; // Wait for scholar to certify
