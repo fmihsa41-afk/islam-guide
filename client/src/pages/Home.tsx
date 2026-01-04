@@ -243,7 +243,7 @@ export default function Home() {
                             <Sparkles className="w-8 h-8 text-primary-foreground" />
                           </motion.div>
                           <h1 className="text-4xl font-bold font-serif">Welcome to all-Islam</h1>
-                          <p className="text-muted-foreground">Made in KSA to People</p>
+                          <p className="text-muted-foreground">Made in ksa to all Humanity</p>
                       </div>
                     )}
                     
