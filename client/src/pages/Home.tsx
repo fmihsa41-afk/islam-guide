@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Sparkles, User, Bot, MousePointer2, MessageSquare, GraduationCap, Phone, Plus, MessageCircle } from 'lucide-react';
+import { Send, Sparkles, User, Bot, MousePointer2, MessageSquare, GraduationCap, Phone, Plus, MessageCircle, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -53,6 +53,7 @@ export default function Home() {
     });
   };
 
+  const [activeUser, setActiveUser] = useState({ name: 'John Madison', avatar: '', role: 'JD' });
   const [scholarEditMode, setScholarEditMode] = useState(false);
   const [scholarEditedText, setScholarEditedText] = useState('');
   const [isCertified, setIsCertified] = useState(false);
@@ -60,7 +61,16 @@ export default function Home() {
   
   const handleInteraction = async () => {
     if (step === 0) {
-      // ... same logic
+      // Step 0: Type the first user message into the input bar
+      const firstMessage = "who created god";
+      for (let i = 0; i <= firstMessage.length; i++) {
+        setInputText(firstMessage.slice(0, i));
+        await new Promise(r => setTimeout(r, 50));
+      }
+      await new Promise(r => setTimeout(r, 500));
+      addMessage('user', firstMessage);
+      setInputText('');
+      setStep(1);
     } else if (step === 1) {
       addMessage('ai', (
         <div className="space-y-4 relative group">
@@ -70,25 +80,35 @@ export default function Home() {
           </p>
           <div className="relative">
             {scholarEditMode ? (
-              <div className="space-y-3 p-4 border-2 border-primary rounded-xl bg-primary/5">
+              <div className="space-y-3 p-4 border-2 border-primary rounded-xl bg-background shadow-2xl z-50">
                 <textarea 
                   className="w-full bg-transparent border-none focus:outline-none text-lg leading-relaxed min-h-[150px] resize-none"
                   value={scholarEditedText}
+                  autoFocus
                   onChange={(e) => setScholarEditedText(e.target.value)}
                 />
                 <div className="flex justify-start">
                   <Button 
                     size="icon" 
-                    variant="ghost" 
                     className="h-8 w-8 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (scholarEditedText === "No one created God...") { // simplified check
+                      const original = "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing.";
+                      if (scholarEditedText.trim() === original.trim()) {
                          setIsCertified(true);
                       } else {
                          setIsEditedAndCertified(true);
                       }
                       setScholarEditMode(false);
+                      // Update the message content to show the result
+                      setMessages(prev => {
+                        const newMsgs = [...prev];
+                        const aiMsg = newMsgs.find(m => m.role === 'ai');
+                        if (aiMsg) {
+                          // Force a re-render by updating the message list
+                        }
+                        return [...newMsgs];
+                      });
                     }}
                   >
                     <Check className="h-5 w-5" />
@@ -96,21 +116,34 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <div className="relative">
+              <div 
+                className={`relative ${activeUser.name === 'Scholar Ahmed' && !isCertified && !isEditedAndCertified ? 'cursor-pointer hover:ring-2 ring-primary/20 rounded-xl transition-all p-2' : ''}`}
+                onClick={(e) => {
+                  if (activeUser.name === 'Scholar Ahmed' && !isCertified && !isEditedAndCertified) {
+                    e.stopPropagation();
+                    setScholarEditMode(true);
+                    setScholarEditedText("No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing.");
+                  }
+                }}
+              >
                 <LanguageCycler 
                   customTranslations={[
                     { lang: 'English', text: scholarEditedText || "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing." },
-                    // ... other translations
+                    { lang: 'Spanish', text: "Nadie creó a Dios..." },
+                    { lang: 'French', text: "Personne n'a créé Dieu..." },
+                    { lang: 'Russian', text: "Никто не создавал Бога..." },
+                    { lang: 'German', text: "Niemand hat Gott erschaffen..." },
+                    { lang: 'Arabic', text: "لا أحد خلق الله...", font: "font-arabic" }
                   ]}
                 />
-                {step === 2 && activeUser.name === 'Scholar Ahmed' && !isCertified && !isEditedAndCertified && (
+                {activeUser.name === 'Scholar Ahmed' && !isCertified && !isEditedAndCertified && !scholarEditMode && (
                    <motion.div 
                     className="absolute z-50 pointer-events-none top-1/2 left-1/2"
-                    initial={{ x: 100, y: 100, opacity: 0 }}
-                    animate={{ x: 0, y: 0, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
+                    initial={{ x: 50, y: 50, opacity: 0 }}
+                    animate={{ x: 0, y: 0, opacity: 1, scale: [1, 0.8, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
                   >
-                    <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-md" />
+                    <MousePointer2 className="h-8 w-8 text-black fill-white drop-shadow-lg" />
                   </motion.div>
                 )}
               </div>
@@ -128,7 +161,7 @@ export default function Home() {
             </p>
           )}
           {isEditedAndCertified && (
-            <p className="text-[10px] text-amber-500 font-bold">
+            <p className="text-[10px] text-orange-500 font-bold">
               changed answer, now certified
             </p>
           )}
@@ -137,10 +170,8 @@ export default function Home() {
       setStep(2);
       // Change user to Scholar Ahmed
       setActiveUser({ name: 'Scholar Ahmed', avatar: '/attached_assets/warm_friendly_scholar_avatar.png', role: 'SA' });
-    }
-    // ... rest of steps
-  };
     } else if (step === 2) {
+      if (!isCertified && !isEditedAndCertified) return; // Wait for scholar to certify
       addMessage('user', "How do I become a Muslim?");
       setStep(3);
     } else if (step === 3) {
@@ -241,10 +272,14 @@ export default function Home() {
           <div className="p-4 border-t border-border/40">
             <div className="flex items-center gap-3 px-2 py-2">
                 <Avatar className="h-8 w-8 border">
-                  <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">JD</AvatarFallback>
+                  {activeUser.avatar ? (
+                    <AvatarImage src={activeUser.avatar} />
+                  ) : (
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{activeUser.role}</AvatarFallback>
+                  )}
                 </Avatar>
                 <div className="flex-1 overflow-hidden">
-                  <p className="text-sm font-medium truncate">John Madison</p>
+                  <p className="text-sm font-medium truncate">{activeUser.name}</p>
                 </div>
             </div>
           </div>
