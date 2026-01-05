@@ -87,7 +87,7 @@ export default function Home() {
                   autoFocus
                   onChange={(e) => setScholarEditedText(e.target.value)}
                 />
-                <div className="flex justify-start">
+                <div className="flex justify-start relative">
                   <Button 
                     size="icon" 
                     className="h-8 w-8 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg"
@@ -105,6 +105,24 @@ export default function Home() {
                   >
                     <Check className="h-5 w-5" />
                   </Button>
+                  <motion.div 
+                    className="absolute z-50 pointer-events-none top-4 left-4"
+                    initial={{ x: 100, y: 100, opacity: 0 }}
+                    animate={{ 
+                      x: [100, 0, 0], 
+                      y: [100, 0, 0], 
+                      opacity: [0, 1, 1],
+                      scale: [1, 1, 0.8, 1] 
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      times: [0, 0.6, 0.8, 1],
+                      repeat: Infinity,
+                      repeatDelay: 1
+                    }}
+                  >
+                    <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-lg" />
+                  </motion.div>
                 </div>
               </div>
             ) : (
