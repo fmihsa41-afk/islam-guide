@@ -127,8 +127,18 @@ export default function Home() {
                    <motion.div 
                     className="absolute z-50 pointer-events-none top-1/2 left-1/2"
                     initial={{ x: 50, y: 50, opacity: 0 }}
-                    animate={{ x: 0, y: 0, opacity: 1, scale: [1, 0.8, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
+                    animate={{ 
+                      x: [50, 0, 0], 
+                      y: [50, 0, 0], 
+                      opacity: [0, 1, 1],
+                      scale: [1, 1, 0.8, 1] 
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      times: [0, 0.6, 0.8, 1],
+                      repeat: Infinity,
+                      repeatDelay: 1
+                    }}
                   >
                     <MousePointer2 className="h-8 w-8 text-black fill-white drop-shadow-lg" />
                   </motion.div>
