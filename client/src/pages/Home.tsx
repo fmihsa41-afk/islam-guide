@@ -335,8 +335,8 @@ export default function Home() {
                           >
                             <Sparkles className="w-8 h-8 text-primary-foreground" />
                           </motion.div>
-                          <h1 className="text-4xl font-bold font-serif">Welcome to all-Islam</h1>
-                          <p className="text-muted-foreground">Made in ksa to all Humanity</p>
+                          <h1 className="text-3xl font-bold font-serif">Welcome to all-Islam</h1>
+                          <p className="text-sm text-muted-foreground">Made in ksa to all Humanity</p>
                       </div>
                     )}
                     
@@ -354,30 +354,30 @@ export default function Home() {
                             }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
-                            className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                            className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                           >
                             {msg.role !== 'user' && (
-                              <Avatar className={`w-8 h-8 border ${msg.role === 'scholar' ? 'border-primary ring-2 ring-primary/20' : ''}`}>
+                              <Avatar className={`w-7 h-7 border ${msg.role === 'scholar' ? 'border-primary ring-2 ring-primary/20' : ''}`}>
                                 {msg.role === 'scholar' ? (
                                   <>
                                     <AvatarImage src="/attached_assets/warm_friendly_scholar_avatar.png" />
-                                    <AvatarFallback className="bg-primary text-primary-foreground font-bold">SA</AvatarFallback>
+                                    <AvatarFallback className="bg-primary text-primary-foreground font-bold text-[10px]">SA</AvatarFallback>
                                   </>
                                 ) : (
-                                  <AvatarFallback className="bg-primary text-primary-foreground"><Sparkles className="w-4 h-4" /></AvatarFallback>
+                                  <AvatarFallback className="bg-primary text-primary-foreground"><Sparkles className="w-3.5 h-3.5" /></AvatarFallback>
                                 )}
                               </Avatar>
                             )}
-                            <div className={`max-w-[85%] ${
+                            <div className={`max-w-[85%] text-sm ${
                               msg.role === 'user' 
-                                ? 'bg-muted px-4 py-3 rounded-2xl rounded-tr-none' 
+                                ? 'bg-muted px-3 py-2 rounded-2xl rounded-tr-none' 
                                 : 'w-full'
                             }`}>
                               {msg.content}
                             </div>
                             {msg.role === 'user' && (
-                              <Avatar className="w-8 h-8 border">
-                                <AvatarFallback className="bg-muted-foreground/20"><User className="w-4 h-4" /></AvatarFallback>
+                              <Avatar className="w-7 h-7 border">
+                                <AvatarFallback className="bg-muted-foreground/20"><User className="w-3.5 h-3.5" /></AvatarFallback>
                               </Avatar>
                             )}
                           </motion.div>
@@ -386,15 +386,15 @@ export default function Home() {
                     </AnimatePresence>
 
                     {isTyping && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start gap-4">
-                        <Avatar className="w-8 h-8 border border-primary ring-2 ring-primary/20">
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start gap-3">
+                        <Avatar className="w-7 h-7 border border-primary ring-2 ring-primary/20">
                           <AvatarImage src="/attached_assets/warm_friendly_scholar_avatar.png" />
-                          <AvatarFallback className="bg-primary text-primary-foreground font-bold">SA</AvatarFallback>
+                          <AvatarFallback className="bg-primary text-primary-foreground font-bold text-[10px]">SA</AvatarFallback>
                         </Avatar>
-                        <div className="bg-muted rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"></span>
-                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                          <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                        <div className="bg-muted rounded-2xl rounded-tl-none px-3 py-2 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-foreground/40 rounded-full animate-bounce"></span>
+                          <span className="w-1 h-1 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                          <span className="w-1 h-1 bg-foreground/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                         </div>
                       </motion.div>
                     )}
