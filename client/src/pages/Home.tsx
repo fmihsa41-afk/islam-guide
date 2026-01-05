@@ -115,10 +115,10 @@ export default function Home() {
                       scale: [1, 1, 0.8, 1] 
                     }}
                     transition={{ 
-                      duration: 2, 
+                      duration: 0.8, 
                       times: [0, 0.6, 0.8, 1],
                       repeat: Infinity,
-                      repeatDelay: 1
+                      repeatDelay: 0.5
                     }}
                   >
                     <MousePointer2 className="h-6 w-6 text-black fill-white drop-shadow-lg" />
