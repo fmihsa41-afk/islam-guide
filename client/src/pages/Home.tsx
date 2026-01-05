@@ -90,7 +90,7 @@ export default function Home() {
                 <div className="flex justify-end relative">
                   <Button 
                     size="icon" 
-                    className="h-6 w-6 rounded-md bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm"
+                    className="h-6 w-6 rounded-md bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm absolute -bottom-3 -right-3 z-50"
                     onClick={(e) => {
                       e.stopPropagation();
                       const original = "No one created God.\n\nThe books explain that Allah is eternal, uncreated, and independent, while everything else is created and dependent on Him. Creation itself requires a creator, but the Creator does not require one.\n\nAllah is described as:\n- existing without a beginning,\n- not dependent on time, matter, or cause,\n- and unlike His creation in every way.\n\nAs explained in The Purpose of Creation, asking “Who created God?” is a category mistake — because creation applies only to created things, not to the One who creates.\n\nSimple example (for clarity)\nIf a painter paints a picture, the picture depends on the painter — but it makes no sense to ask: “Who painted the painter?” because the painter exists independently of the painting.\n\nLikewise: The universe depends on Allah. Allah depends on nothing.";
@@ -106,7 +106,7 @@ export default function Home() {
                     <Check className="h-4 w-4" />
                   </Button>
                   <motion.div 
-                    className="absolute z-50 pointer-events-none -bottom-2 -right-2"
+                    className="absolute z-[60] pointer-events-none -bottom-5 -right-5"
                     initial={{ x: 100, y: 100, opacity: 0 }}
                     animate={{ 
                       x: [100, 0, 0], 
