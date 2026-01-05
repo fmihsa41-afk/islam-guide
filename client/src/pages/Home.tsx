@@ -324,8 +324,8 @@ export default function Home() {
                 exit={{ opacity: 0, x: 20 }}
                 className="h-full flex flex-col"
               >
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 flex flex-col items-center">
-                  <div className="max-w-3xl w-full space-y-8 pb-32 flex-1 flex flex-col justify-center">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-4 flex flex-col items-center">
+                  <div className="max-w-xl w-full space-y-6 pb-32 flex-1 flex flex-col justify-center">
                     {messages.length === 0 && !isTyping && (
                       <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
                           <motion.div 
