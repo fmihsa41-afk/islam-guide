@@ -189,12 +189,16 @@ export default function Home() {
       const nextUserMessage = "How do I become a Muslim?";
       for (let i = 0; i <= nextUserMessage.length; i++) {
         setInputText(nextUserMessage.slice(0, i));
-        await new Promise(r => setTimeout(r, 50));
+        await new Promise(r => setTimeout(r, 30));
       }
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise(r => setTimeout(r, 400));
       addMessage('user', nextUserMessage);
       setInputText('');
       setStep(3);
+      // Manually trigger AI response for step 3 since we are in a manual flow
+      setTimeout(() => {
+        handleInteraction();
+      }, 1000);
     } else if (step === 3) {
       addMessage('ai', <LanguageCycler 
         customTranslations={[
@@ -202,6 +206,10 @@ export default function Home() {
         ]} 
       />);
       setStep(4);
+      // Manually trigger connect modal for step 4
+      setTimeout(() => {
+        handleInteraction();
+      }, 1500);
     } else if (step === 4) {
       setShowConnect(true);
       setStep(5);
