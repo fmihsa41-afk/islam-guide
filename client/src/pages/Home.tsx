@@ -187,6 +187,9 @@ export default function Home() {
       if (!isCertified && !isEditedAndCertified) return; // Wait for scholar to certify
       
       const nextUserMessage = "How do I become a Muslim?";
+      // Clear interval or prevent multiple triggers
+      if (inputText === nextUserMessage) return;
+
       for (let i = 0; i <= nextUserMessage.length; i++) {
         setInputText(nextUserMessage.slice(0, i));
         await new Promise(r => setTimeout(r, 30));
@@ -195,11 +198,13 @@ export default function Home() {
       addMessage('user', nextUserMessage);
       setInputText('');
       setStep(3);
-      // Manually trigger AI response for step 3 since we are in a manual flow
+      // Manually trigger AI response for step 3
       setTimeout(() => {
         handleInteraction();
       }, 1000);
     } else if (step === 3) {
+      if (messages.some(m => m.content && typeof m.content === 'object' && m.content.props && m.content.props.customTranslations && m.content.props.customTranslations[0].text === "We will connect you to our scholar.")) return;
+      
       addMessage('ai', <LanguageCycler 
         customTranslations={[
           { lang: 'English', text: "We will connect you to our scholar." }
