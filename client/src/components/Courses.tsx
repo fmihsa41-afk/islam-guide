@@ -3,6 +3,7 @@ import { BookOpen, Star, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useLocation } from "wouter";
 
 // @ts-ignore
 import quranCover from '@assets/Quran_1767336376737.jpg';
@@ -16,6 +17,7 @@ import tawheedCover from '@assets/tawheed_1767336638053.jpg';
 const coursesData = [
   {
     title: "Faith Essentials",
+    slug: "faith-essentials",
     description: "Understanding the 5 Pillars of Islam in depth.",
     image: tawheedCover,
     lessons: 12,
@@ -23,6 +25,7 @@ const coursesData = [
   },
   {
     title: "Prayer Guide",
+    slug: "prayer-guide",
     description: "Step-by-step guide to performing Salah perfectly.",
     image: prayerCover,
     lessons: 8,
@@ -30,6 +33,7 @@ const coursesData = [
   },
   {
     title: "Quranic Studies",
+    slug: "quranic-studies",
     description: "Introduction to reading and understanding the Quran.",
     image: quranCover,
     lessons: 20,
@@ -37,6 +41,7 @@ const coursesData = [
   },
   {
     title: "Life of Prophet Muhammad",
+    slug: "life-of-prophet-muhammad",
     description: "Learning from the Seerah of the final messenger.",
     image: prophetCover,
     lessons: 15,
@@ -45,6 +50,8 @@ const coursesData = [
 ];
 
 export function Courses() {
+  const [, navigate] = useLocation();
+
   return (
     <div className="min-h-screen bg-background pb-20">
       <motion.div 
@@ -62,9 +69,9 @@ export function Courses() {
           >
             <Star className="h-12 w-12 text-primary fill-primary" />
           </motion.div>
-          
+
           <h1 className="text-4xl font-bold font-serif">Where you begin!</h1>
-          
+
           <p className="max-w-2xl mx-auto text-muted-foreground italic">
             Ibn Sirin said, “This knowledge is a religion, so consider from whom you receive your religion.”
           </p>
@@ -73,12 +80,15 @@ export function Courses() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {coursesData.map((course, i) => (
             <motion.div
-              key={i}
+              key={course.slug}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + (i * 0.1) }}
             >
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 group h-full flex flex-col">
+              <Card
+                className="overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 group h-full flex flex-col cursor-pointer"
+                onClick={() => navigate(`/courses/${course.slug}`)}
+              >
                 <div className="relative h-48 overflow-hidden bg-black">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10" />
                   <img 
