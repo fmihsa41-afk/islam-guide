@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ArrowRight, MousePointer2 } from 'lucide-react'
 
 interface CongratulationsModalProps {
-  onContinue: () => void
+  onContinue?: () => void
 }
 
 const translations = {
@@ -60,7 +60,7 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
     const timer = setInterval(() => {
       setLangIndex((prev) => (prev + 1) % translations.heading.length)
     }, 1500)
-    
+
     // Show mouse after a short delay
     const mouseTimer = setTimeout(() => {
       setShowMouse(true)
@@ -71,6 +71,11 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
       clearTimeout(mouseTimer)
     }
   }, [])
+
+  const handleContinue = () => {
+    // Redirect to Faith Academy
+    window.location.replace('https://faith-academy--fmihsa41.replit.app/')
+  }
 
   return (
     <motion.div
@@ -128,7 +133,7 @@ export function CongratulationsModal({ onContinue }: CongratulationsModalProps) 
         </div>
 
         <button
-          onClick={onContinue}
+          onClick={handleContinue}
           className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 group relative"
         >
           <AnimatePresence mode="wait">

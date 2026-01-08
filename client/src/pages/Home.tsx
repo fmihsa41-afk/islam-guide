@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Sparkles, User, Bot, GraduationCap, Phone, Plus, MessageCircle, BookOpen } from 'lucide-react';
+import { Send, Sparkles, User, Bot, GraduationCap, Phone, Plus, MessageCircle, BookOpen, Archive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,6 +10,7 @@ import { CongratulationsModal } from '@/components/CongratulationsModal';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import AdminBooks from '@/pages/AdminBooks';
+import ArchivedResources from '@/pages/ArchivedResources';
 
 type Role = 'user' | 'ai' | 'scholar';
 interface Message {
@@ -324,6 +325,15 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
               <BookOpen className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Books</span>
             </Button>
+            <Button
+              variant={activeView === 'archived' ? 'default' : 'ghost'}
+              size="sm"
+              className="rounded-lg"
+              onClick={() => setActiveView('archived')}
+            >
+              <Archive className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Archived</span>
+            </Button>
           </nav>
           <div className="text-sm text-muted-foreground hidden md:block opacity-50">
             v1.0 {demoRunning && `(Demo: Step ${step}/9)`}
@@ -368,9 +378,8 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.95 }}
                           transition={{ duration: 0.3, ease: 'easeOut' }}
-                          className={`flex gap-3 ${
-                            msg.role === 'user' ? 'justify-end' : 'justify-start'
-                          }`}
+                          className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'
+                            }`}
                         >
                           {msg.role !== 'user' && (
                             msg.role === 'scholar' ? (
@@ -406,9 +415,8 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
 
                             {msg.role === 'ai' && msg.certifiable && (
                               <p
-                                className={`mt-1 text-[10px] font-bold uppercase tracking-wide ${
-                                  isCertified ? 'text-emerald-500' : 'text-red-500'
-                                }`}
+                                className={`mt-1 text-[10px] font-bold uppercase tracking-wide ${isCertified ? 'text-emerald-500' : 'text-red-500'
+                                  }`}
                               >
                                 {isCertified
                                   ? isEditedAndCertified
@@ -482,21 +490,21 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                             animate={
                               isConnected
                                 ? {
-                                    // connected: icon is about 3/5 of connecting size, pulsing
-                                    scale: [0.6, 0.5, 0.6],
-                                  }
+                                  // connected: icon is about 3/5 of connecting size, pulsing
+                                  scale: [0.6, 0.5, 0.6],
+                                }
                                 : {
-                                    // connecting: full size
-                                    scale: 1,
-                                  }
+                                  // connecting: full size
+                                  scale: 1,
+                                }
                             }
                             transition={
                               isConnected
                                 ? {
-                                    repeat: Infinity,
-                                    duration: 1.5,
-                                    ease: 'easeInOut',
-                                  }
+                                  repeat: Infinity,
+                                  duration: 1.5,
+                                  ease: 'easeInOut',
+                                }
                                 : { duration: 0.2 }
                             }
                             className="relative flex items-center justify-center h-12 w-12"
@@ -508,9 +516,8 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
 
                             {/* INNER CIRCLE */}
                             <div
-                              className={`relative rounded-full flex items-center justify-center h-10 w-10 ${
-                                isConnected ? 'bg-emerald-500' : 'bg-transparent'
-                              }`}
+                              className={`relative rounded-full flex items-center justify-center h-10 w-10 ${isConnected ? 'bg-emerald-500' : 'bg-transparent'
+                                }`}
                             >
                               {isConnected ? (
                                 // CONNECTED: SA avatar
@@ -597,6 +604,18 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                 className="h-full overflow-y-auto"
               >
                 <AdminBooks />
+              </motion.div>
+            )}
+
+            {activeView === 'archived' && (
+              <motion.div
+                key="archived-view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="h-full overflow-y-auto"
+              >
+                <ArchivedResources />
               </motion.div>
             )}
 

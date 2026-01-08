@@ -1,128 +1,192 @@
-import { motion } from 'framer-motion';
-import { BookOpen, Star, Clock, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useLocation } from "wouter";
-
-// @ts-ignore
-import quranCover from '@assets/Quran_1767336376737.jpg';
-// @ts-ignore
-import prophetCover from '@assets/prohpet_1767336455374.jpg';
-// @ts-ignore
-import prayerCover from '@assets/prayer_1767336536787.jpg';
-// @ts-ignore
-import tawheedCover from '@assets/tawheed_1767336638053.jpg';
-
-const coursesData = [
-  {
-    title: "Faith Essentials",
-    slug: "faith-essentials",
-    description: "Understanding the 5 Pillars of Islam in depth.",
-    image: tawheedCover,
-    lessons: 12,
-    duration: "4h 30m"
-  },
-  {
-    title: "Prayer Guide",
-    slug: "prayer-guide",
-    description: "Step-by-step guide to performing Salah perfectly.",
-    image: prayerCover,
-    lessons: 8,
-    duration: "2h 15m"
-  },
-  {
-    title: "Quranic Studies",
-    slug: "quranic-studies",
-    description: "Introduction to reading and understanding the Quran.",
-    image: quranCover,
-    lessons: 20,
-    duration: "10h 00m"
-  },
-  {
-    title: "Life of Prophet Muhammad",
-    slug: "life-of-prophet-muhammad",
-    description: "Learning from the Seerah of the final messenger.",
-    image: prophetCover,
-    lessons: 15,
-    duration: "6h 45m"
-  }
-];
+import { useLocation } from 'wouter';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BookOpen, Clock, PlayCircle, Plus, Edit, Trash2, Archive, Loader2, ArrowRight } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { InsertCourse } from '@shared/schema';
 
 export function Courses() {
   const [, navigate] = useLocation();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<any>(null);
+
+  const { data: courses, isLoading } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => api.getCourses(false),
+  });
+
+  const createMutation = useMutation({
+    mutationFn: api.createCourse,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      setIsDialogOpen(false);
+      toast({ title: "Course created successfully" });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (data: { id: number; data: Partial<InsertCourse> }) => api.updateCourse(data.id, data.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      setIsDialogOpen(false);
+      setEditingCourse(null);
+      toast({ title: "Course updated successfully" });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: api.deleteCourse,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      toast({ title: "Course deleted successfully" });
+    },
+  });
+
+  const archiveMutation = useMutation({
+    mutationFn: (id: number) => api.updateCourse(id, { isArchived: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      toast({ title: "Course archived" });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      slug: (formData.get('title') as string).toLowerCase().replace(/\s+/g, '-'),
+      coverImage: formData.get('coverImage') as string,
+      youtubeUrl: formData.get('youtubeUrl') as string,
+      duration: formData.get('duration') as string,
+      lessons: parseInt(formData.get('lessons') as string) || 0,
+    };
+
+    if (editingCourse) {
+      updateMutation.mutate({ id: editingCourse.id, data });
+    } else {
+      createMutation.mutate(data);
+    }
+  };
+
+  if (isLoading) return <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>;
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="container mx-auto px-4 py-16 space-y-12"
-      >
-        <div className="text-center space-y-4">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, type: 'spring' }}
-            className="inline-block p-4 rounded-full bg-primary/10 mb-4"
-          >
-            <Star className="h-12 w-12 text-primary fill-primary" />
-          </motion.div>
-
-          <h1 className="text-4xl font-bold font-serif">Where you begin!</h1>
-
-          <p className="max-w-2xl mx-auto text-muted-foreground italic">
-            Ibn Sirin said, “This knowledge is a religion, so consider from whom you receive your religion.”
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coursesData.map((course, i) => (
-            <motion.div
-              key={course.slug}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + (i * 0.1) }}
-            >
-              <Card
-                className="overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 group h-full flex flex-col cursor-pointer"
-                onClick={() => navigate(`/courses/${course.slug}`)}
-              >
-                <div className="relative h-48 overflow-hidden bg-black">
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10" />
-                  <img 
-                    src={course.image} 
-                    alt={course.title} 
-                    className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500"
-                  />
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold font-serif">Islamic Courses</h2>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) setEditingCourse(null);
+        }}>
+          <DialogTrigger asChild>
+            <Button><Plus className="w-4 h-4 mr-2" /> Add Course</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{editingCourse ? 'Edit Course' : 'Add New Course'}</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="title">Title</Label>
+                <Input id="title" name="title" defaultValue={editingCourse?.title} required />
+              </div>
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea id="description" name="description" defaultValue={editingCourse?.description} required />
+              </div>
+              <div>
+                <Label htmlFor="coverImage">Cover Image URL</Label>
+                <Input id="coverImage" name="coverImage" defaultValue={editingCourse?.coverImage} />
+              </div>
+              <div>
+                <Label htmlFor="youtubeUrl">YouTube URL</Label>
+                <Input id="youtubeUrl" name="youtubeUrl" defaultValue={editingCourse?.youtubeUrl} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="duration">Duration</Label>
+                  <Input id="duration" name="duration" defaultValue={editingCourse?.duration} />
                 </div>
-                <CardHeader>
-                  <CardTitle className="font-serif">{course.title}</CardTitle>
-                  <CardDescription className="mt-2">{course.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
-                      <span>{course.lessons} Lessons</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{course.duration}</span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    Start Learning <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+                <div>
+                  <Label htmlFor="lessons">Lessons</Label>
+                  <Input id="lessons" name="lessons" type="number" defaultValue={editingCourse?.lessons} />
+                </div>
+              </div>
+              <Button type="submit" className="w-full" disabled={createMutation.isPending || updateMutation.isPending}>
+                {editingCourse ? 'Update Course' : 'Create Course'}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses?.map((course) => (
+          <Card key={course.id} className="cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+            onClick={(e) => {
+              // Prevent navigation if clicking action buttons
+              if ((e.target as HTMLElement).closest('button')) return;
+              navigate(`/courses/${course.slug}`);
+            }}
+          >
+            <div className="aspect-video relative overflow-hidden bg-muted">
+              {course.coverImage ? (
+                <img
+                  src={course.coverImage}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                  <PlayCircle className="w-12 h-12 text-muted-foreground" />
+                </div>
+              )}
+            </div>
+            <CardHeader>
+              <CardTitle className="font-serif">{course.title}</CardTitle>
+              <CardDescription className="mt-2 line-clamp-2">{course.description}</CardDescription>
+            </CardHeader>
+            <CardFooter className="flex justify-between text-sm text-muted-foreground">
+              <div className="flex items-center">
+                <BookOpen className="w-4 h-4 mr-1" />
+                <span>{course.lessons} Lessons</span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 mr-1" />
+                <span>{course.duration}</span>
+              </div>
+            </CardFooter>
+            {/* Admin Controls */}
+            <div className="px-6 pb-4 flex justify-end gap-2">
+              <Button size="icon" variant="ghost" onClick={() => {
+                setEditingCourse(course);
+                setIsDialogOpen(true);
+              }}>
+                <Edit className="w-4 h-4" />
+              </Button>
+              <Button size="icon" variant="ghost" onClick={() => archiveMutation.mutate(course.id)}>
+                <Archive className="w-4 h-4" />
+              </Button>
+              <Button size="icon" variant="ghost" className="text-destructive" onClick={() => {
+                if (confirm('Are you sure?')) deleteMutation.mutate(course.id);
+              }}>
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
