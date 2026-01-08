@@ -295,7 +295,7 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary md:hidden">
               <Sparkles className="w-5 h-5" />
             </div>
-            <span className="font-serif">all-Islam</span>
+            <span className="font-serif">Wadoo</span>
           </div>
           <nav className="flex items-center gap-1 bg-muted/50 p-1 rounded-xl">
             <Button
@@ -563,7 +563,7 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                           <Input
                             value={inputText}
                             readOnly
-                            placeholder="Message all-Islam..."
+                            placeholder="Message Wadoo..."
                             className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base h-14 bg-background"
                           />
                           <Button
@@ -637,7 +637,7 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                   value={inputText}
                   onChange={e => setInputText(e.target.value)}
                   placeholder={
-                    isScholarActive ? 'Message Scholar Ahmed...' : 'Message all-Islam...'
+                    isScholarActive ? 'Message Scholar Ahmed...' : 'Message Wadoo...'
                   }
                   className="pr-12 py-6 rounded-2xl shadow-lg border-muted-foreground/20 text-base"
                   onKeyDown={e => {
@@ -668,7 +668,7 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
             </div>
             {messages.length > 0 && (
               <div className="text-center mt-2 text-xs text-muted-foreground max-w-3xl mx-auto">
-                all-Islam connects you with wisdom. Everything you need in one place.{` `}
+                Wadoo connects you with wisdom. Everything you need in one place.{` `}
                 {demoRunning && '(Demo running)'}
               </div>
             )}
