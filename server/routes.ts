@@ -28,6 +28,12 @@ export async function registerRoutes(
     res.json(course);
   });
 
+  app.get("/api/courses/slug/:slug", async (req, res) => {
+    const course = await storage.getCourseBySlug(req.params.slug);
+    if (!course) return res.status(404).json({ message: "Course not found" });
+    res.json(course);
+  });
+
   app.post("/api/courses", async (req, res) => {
     const parsed = insertCourseSchema.safeParse(req.body);
     if (!parsed.success) {

@@ -10,6 +10,7 @@ export interface IStorage {
   // Courses
   getCourses(includeArchived?: boolean): Promise<Course[]>;
   getCourse(id: number): Promise<Course | undefined>;
+  getCourseBySlug(slug: string): Promise<Course | undefined>;
   createCourse(course: InsertCourse): Promise<Course>;
   updateCourse(id: number, course: Partial<InsertCourse>): Promise<Course>;
   deleteCourse(id: number): Promise<void>;
@@ -48,6 +49,11 @@ export class DatabaseStorage implements IStorage {
 
   async getCourse(id: number): Promise<Course | undefined> {
     const [course] = await db.select().from(courses).where(eq(courses.id, id));
+    return course;
+  }
+
+  async getCourseBySlug(slug: string): Promise<Course | undefined> {
+    const [course] = await db.select().from(courses).where(eq(courses.slug, slug));
     return course;
   }
 

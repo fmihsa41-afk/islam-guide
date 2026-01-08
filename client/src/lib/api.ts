@@ -12,6 +12,10 @@ export const api = {
         const res = await apiRequest("GET", `/api/courses/${id}`);
         return res.json() as Promise<Course>;
     },
+    getCourseBySlug: async (slug: string) => {
+        const res = await apiRequest("GET", `/api/courses/slug/${slug}`);
+        return res.json() as Promise<Course>;
+    },
     createCourse: async (course: InsertCourse) => {
         const res = await apiRequest("POST", "/api/courses", course);
         return res.json() as Promise<Course>;

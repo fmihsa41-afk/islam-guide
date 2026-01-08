@@ -131,60 +131,81 @@ export function Courses() {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {courses?.map((course) => (
-          <Card key={course.id} className="cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+          <div
+            key={course.id}
+            className="group relative cursor-pointer"
             onClick={(e) => {
-              // Prevent navigation if clicking action buttons
               if ((e.target as HTMLElement).closest('button')) return;
               navigate(`/courses/${course.slug}`);
             }}
           >
-            <div className="aspect-video relative overflow-hidden bg-muted">
-              {course.coverImage ? (
-                <img
-                  src={course.coverImage}
-                  alt={course.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                  <PlayCircle className="w-12 h-12 text-muted-foreground" />
+            {/* The "Shape" - organic rounded container */}
+            <div className="relative overflow-hidden rounded-[2rem] bg-card border border-border/50 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5 group-hover:-translate-y-2">
+              <div className="aspect-[4/3] relative overflow-hidden bg-muted">
+                {course.coverImage ? (
+                  <img
+                    src={course.coverImage}
+                    alt={course.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                    <PlayCircle className="w-12 h-12 text-primary/20" />
+                  </div>
+                )}
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+
+              <div className="p-6 space-y-3">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-xl font-bold font-serif leading-tight group-hover:text-primary transition-colors">
+                    {course.title}
+                  </h3>
                 </div>
-              )}
-            </div>
-            <CardHeader>
-              <CardTitle className="font-serif">{course.title}</CardTitle>
-              <CardDescription className="mt-2 line-clamp-2">{course.description}</CardDescription>
-            </CardHeader>
-            <CardFooter className="flex justify-between text-sm text-muted-foreground">
-              <div className="flex items-center">
-                <BookOpen className="w-4 h-4 mr-1" />
-                <span>{course.lessons} Lessons</span>
+                <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                  {course.description}
+                </p>
+
+                <div className="flex items-center gap-4 pt-2 text-xs font-medium text-muted-foreground">
+                  <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>{course.lessons} Lessons</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>{course.duration}</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Clock className="w-4 h-4 mr-1" />
-                <span>{course.duration}</span>
+
+              {/* Admin Action Bar - sleek overlay */}
+              <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
+                  e.stopPropagation();
+                  setEditingCourse(course);
+                  setIsDialogOpen(true);
+                }}>
+                  <Edit className="w-3.5 h-3.5" />
+                </Button>
+                <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
+                  e.stopPropagation();
+                  archiveMutation.mutate(course.id);
+                }}>
+                  <Archive className="w-3.5 h-3.5" />
+                </Button>
+                <Button size="icon" variant="destructive" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
+                  e.stopPropagation();
+                  if (confirm('Are you sure?')) deleteMutation.mutate(course.id);
+                }}>
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
               </div>
-            </CardFooter>
-            {/* Admin Controls */}
-            <div className="px-6 pb-4 flex justify-end gap-2">
-              <Button size="icon" variant="ghost" onClick={() => {
-                setEditingCourse(course);
-                setIsDialogOpen(true);
-              }}>
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button size="icon" variant="ghost" onClick={() => archiveMutation.mutate(course.id)}>
-                <Archive className="w-4 h-4" />
-              </Button>
-              <Button size="icon" variant="ghost" className="text-destructive" onClick={() => {
-                if (confirm('Are you sure?')) deleteMutation.mutate(course.id);
-              }}>
-                <Trash2 className="w-4 h-4" />
-              </Button>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

@@ -31,6 +31,8 @@ export default function AdminBooks() {
     queryFn: api.getBooks,
   });
 
+  const [viewingBook, setViewingBook] = useState<any>(null);
+
   const createMutation = useMutation({
     mutationFn: api.createBook,
     onSuccess: () => {
@@ -118,6 +120,28 @@ export default function AdminBooks() {
 
   return (
     <div className="space-y-6 container mx-auto px-4 py-8">
+      {/* PDF Viewer Dialog */}
+      <Dialog open={!!viewingBook} onOpenChange={(open) => { if (!open) setViewingBook(null); }}>
+        <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-0 overflow-hidden bg-background">
+          <DialogHeader className="p-4 border-b">
+            <DialogTitle className="font-serif truncate pr-8">{viewingBook?.title}</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 w-full h-full pb-14">
+            {viewingBook?.fileUrl ? (
+              <iframe
+                src={`${viewingBook.fileUrl}#toolbar=0`}
+                className="w-full h-full border-none"
+                title={viewingBook.title}
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-muted-foreground">Preview not available.</p>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-primary/5 p-6 rounded-lg">
         <div className="flex items-center gap-3">
           <BookOpen className="w-8 h-8 text-primary" />
@@ -239,7 +263,7 @@ export default function AdminBooks() {
               <div className="flex gap-2">
                 {book.fileUrl && (
                   <>
-                    <Button variant="outline" size="sm" className="flex-1" onClick={() => window.open(book.fileUrl, '_blank')}>
+                    <Button variant="outline" size="sm" className="flex-1" onClick={() => setViewingBook(book)}>
                       <Eye className="w-4 h-4 mr-2" /> View
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1" onClick={() => {

@@ -41,39 +41,44 @@ export default function ArchivedResources() {
                 {archivedCourses?.length === 0 ? (
                     <p className="text-muted-foreground text-center">No archived courses.</p>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {archivedCourses?.map((course) => (
-                            <Card key={course.id} className="opacity-75 hover:opacity-100 transition-opacity">
-                                <div className="aspect-video relative overflow-hidden bg-muted">
-                                    {course.coverImage && (
-                                        <img
-                                            src={course.coverImage}
-                                            alt={course.title}
-                                            className="w-full h-full object-cover grayscale"
-                                        />
-                                    )}
-                                </div>
-                                <CardHeader>
-                                    <CardTitle>{course.title}</CardTitle>
-                                    <CardDescription className="mt-2 line-clamp-2">{course.description}</CardDescription>
-                                </CardHeader>
-                                <CardFooter className="flex justify-between text-sm text-muted-foreground">
-                                    <div className="flex items-center">
-                                        <BookOpen className="w-4 h-4 mr-1" />
-                                        <span>{course.lessons} Lessons</span>
+                            <div key={course.id} className="relative group opacity-80 hover:opacity-100 transition-opacity">
+                                <div className="relative overflow-hidden rounded-[2rem] bg-card border border-border/50 shadow-sm transition-all duration-300">
+                                    <div className="aspect-[4/3] relative overflow-hidden bg-muted">
+                                        {course.coverImage && (
+                                            <img
+                                                src={course.coverImage}
+                                                alt={course.title}
+                                                className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        )}
                                     </div>
-                                </CardFooter>
-                                <CardFooter className="justify-end gap-2">
-                                    <Button variant="outline" size="sm" onClick={() => unarchiveMutation.mutate(course.id)}>
-                                        <RefreshCw className="w-4 h-4 mr-2" /> Restore
-                                    </Button>
-                                    <Button variant="destructive" size="sm" onClick={() => {
-                                        if (confirm('This will explicitly delete the course. Are you sure?')) deleteMutation.mutate(course.id);
-                                    }}>
-                                        <Trash2 className="w-4 h-4" />
-                                    </Button>
-                                </CardFooter>
-                            </Card>
+                                    <div className="p-6 space-y-3">
+                                        <h3 className="text-xl font-bold font-serif leading-tight">{course.title}</h3>
+                                        <p className="text-sm text-muted-foreground line-clamp-2">{course.description}</p>
+
+                                        <div className="flex items-center gap-4 pt-2 text-xs font-medium text-muted-foreground">
+                                            <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
+                                                <BookOpen className="w-3.5 h-3.5" />
+                                                <span>{course.lessons} Lessons</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Bar */}
+                                    <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                        <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={() => unarchiveMutation.mutate(course.id)}>
+                                            <RefreshCw className="w-3.5 h-3.5" />
+                                        </Button>
+                                        <Button size="icon" variant="destructive" className="h-8 w-8 rounded-full shadow-lg" onClick={() => {
+                                            if (confirm('This will explicitly delete the course. Are you sure?')) deleteMutation.mutate(course.id);
+                                        }}>
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 )}
