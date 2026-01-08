@@ -1,7 +1,7 @@
-# Definitive Replit Config
 { pkgs }: {
   deps = [
-    pkgs.nodejs-20_x
+    pkgs.nodejs_20
+    pkgs.nodePackages.typescript-language-server
     pkgs.sqlite
   ];
 }
