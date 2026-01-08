@@ -2,6 +2,25 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { db } from "./db";
+import { sql } from "drizzle-orm";
+
+// Auto-create lessons table if missing
+async function initDatabase() {
+  try {
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS lessons (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+        title TEXT NOT NULL,
+        youtube_url TEXT NOT NULL,
+        "order" INTEGER DEFAULT 0
+      )
+    `);
+  } catch (error) {
+    console.error('Database init error:', error);
+  }
+}
 
 const app = express();
 const httpServer = createServer(app);
