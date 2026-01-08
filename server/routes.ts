@@ -20,16 +20,17 @@ export async function registerRoutes(
     res.json(courses);
   });
 
-  app.get("/api/courses/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
-    const course = await storage.getCourse(id);
+  // IMPORTANT: Slug route must come BEFORE the :id route!
+  app.get("/api/courses/slug/:slug", async (req, res) => {
+    const course = await storage.getCourseBySlug(req.params.slug);
     if (!course) return res.status(404).json({ message: "Course not found" });
     res.json(course);
   });
 
-  app.get("/api/courses/slug/:slug", async (req, res) => {
-    const course = await storage.getCourseBySlug(req.params.slug);
+  app.get("/api/courses/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
+    const course = await storage.getCourse(id);
     if (!course) return res.status(404).json({ message: "Course not found" });
     res.json(course);
   });
