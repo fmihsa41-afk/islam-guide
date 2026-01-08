@@ -2,7 +2,7 @@ import express, { type Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { upload, UPLOADS_DIR } from "./uploads";
-import { insertCourseSchema, insertBookSchema } from "@shared/schema";
+import { insertCourseSchema, insertBookSchema, insertLessonSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(
@@ -92,6 +92,43 @@ export async function registerRoutes(
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
     await storage.deleteBook(id);
+    res.status(204).send();
+  });
+
+  // --- Lessons API ---
+  app.get("/api/courses/:courseId/lessons", async (req, res) => {
+    const courseId = parseInt(req.params.courseId);
+    if (isNaN(courseId)) return res.status(400).json({ message: "Invalid course ID" });
+    const lessons = await storage.getLessonsByCourse(courseId);
+    res.json(lessons);
+  });
+
+  app.post("/api/courses/:courseId/lessons", async (req, res) => {
+    const courseId = parseInt(req.params.courseId);
+    if (isNaN(courseId)) return res.status(400).json({ message: "Invalid course ID" });
+    const parsed = insertLessonSchema.safeParse({ ...req.body, courseId });
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Invalid lesson data", errors: parsed.error });
+    }
+    const lesson = await storage.createLesson(parsed.data);
+    res.json(lesson);
+  });
+
+  app.patch("/api/lessons/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
+    const parsed = insertLessonSchema.partial().safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Invalid lesson data", errors: parsed.error });
+    }
+    const lesson = await storage.updateLesson(id, parsed.data);
+    res.json(lesson);
+  });
+
+  app.delete("/api/lessons/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
+    await storage.deleteLesson(id);
     res.status(204).send();
   });
 

@@ -1,4 +1,4 @@
-import { users, courses, books, type User, type InsertUser, type Course, type InsertCourse, type Book, type InsertBook } from "@shared/schema";
+import { users, courses, books, lessons, type User, type InsertUser, type Course, type InsertCourse, type Book, type InsertBook, type Lesson, type InsertLesson } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
@@ -21,6 +21,13 @@ export interface IStorage {
   createBook(book: InsertBook): Promise<Book>;
   updateBook(id: number, book: Partial<InsertBook>): Promise<Book>;
   deleteBook(id: number): Promise<void>;
+
+  // Lessons
+  getLessonsByCourse(courseId: number): Promise<Lesson[]>;
+  getLesson(id: number): Promise<Lesson | undefined>;
+  createLesson(lesson: InsertLesson): Promise<Lesson>;
+  updateLesson(id: number, lesson: Partial<InsertLesson>): Promise<Lesson>;
+  deleteLesson(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -93,6 +100,30 @@ export class DatabaseStorage implements IStorage {
 
   async deleteBook(id: number): Promise<void> {
     await db.delete(books).where(eq(books.id, id));
+  }
+
+  // Lessons
+  async getLessonsByCourse(courseId: number): Promise<Lesson[]> {
+    return db.select().from(lessons).where(eq(lessons.courseId, courseId)).orderBy(lessons.order);
+  }
+
+  async getLesson(id: number): Promise<Lesson | undefined> {
+    const [lesson] = await db.select().from(lessons).where(eq(lessons.id, id));
+    return lesson;
+  }
+
+  async createLesson(insertLesson: InsertLesson): Promise<Lesson> {
+    const [lesson] = await db.insert(lessons).values(insertLesson).returning();
+    return lesson;
+  }
+
+  async updateLesson(id: number, updateData: Partial<InsertLesson>): Promise<Lesson> {
+    const [lesson] = await db.update(lessons).set(updateData).where(eq(lessons.id, id)).returning();
+    return lesson;
+  }
+
+  async deleteLesson(id: number): Promise<void> {
+    await db.delete(lessons).where(eq(lessons.id, id));
   }
 }
 

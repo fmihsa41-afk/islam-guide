@@ -1,6 +1,5 @@
-
 import { apiRequest } from "./queryClient";
-import type { Course, InsertCourse, Book, InsertBook } from "@shared/schema";
+import type { Course, InsertCourse, Book, InsertBook, Lesson, InsertLesson } from "@shared/schema";
 
 export const api = {
     // Courses
@@ -8,12 +7,12 @@ export const api = {
         const res = await apiRequest("GET", `/api/courses?archived=${archived}`);
         return res.json() as Promise<Course[]>;
     },
-    getCourse: async (id: number) => {
-        const res = await apiRequest("GET", `/api/courses/${id}`);
-        return res.json() as Promise<Course>;
-    },
     getCourseBySlug: async (slug: string) => {
         const res = await apiRequest("GET", `/api/courses/slug/${slug}`);
+        return res.json() as Promise<Course>;
+    },
+    getCourse: async (id: number) => {
+        const res = await apiRequest("GET", `/api/courses/${id}`);
         return res.json() as Promise<Course>;
     },
     createCourse: async (course: InsertCourse) => {
@@ -26,6 +25,23 @@ export const api = {
     },
     deleteCourse: async (id: number) => {
         await apiRequest("DELETE", `/api/courses/${id}`);
+    },
+
+    // Lessons
+    getLessonsByCourse: async (courseId: number) => {
+        const res = await apiRequest("GET", `/api/courses/${courseId}/lessons`);
+        return res.json() as Promise<Lesson[]>;
+    },
+    createLesson: async (courseId: number, lesson: Omit<InsertLesson, 'courseId'>) => {
+        const res = await apiRequest("POST", `/api/courses/${courseId}/lessons`, lesson);
+        return res.json() as Promise<Lesson>;
+    },
+    updateLesson: async (id: number, lesson: Partial<InsertLesson>) => {
+        const res = await apiRequest("PATCH", `/api/lessons/${id}`, lesson);
+        return res.json() as Promise<Lesson>;
+    },
+    deleteLesson: async (id: number) => {
+        await apiRequest("DELETE", `/api/lessons/${id}`);
     },
 
     // Books

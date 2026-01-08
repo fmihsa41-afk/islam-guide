@@ -50,3 +50,16 @@ export const books = sqliteTable("books", {
 export const insertBookSchema = createInsertSchema(books);
 export type InsertBook = z.infer<typeof insertBookSchema>;
 export type Book = typeof books.$inferSelect;
+
+// Lessons Table
+export const lessons = sqliteTable("lessons", {
+  id: sqliteInteger("id").primaryKey({ autoIncrement: true }),
+  courseId: sqliteInteger("course_id").notNull().references(() => courses.id, { onDelete: 'cascade' }),
+  title: sqliteText("title").notNull(),
+  youtubeUrl: sqliteText("youtube_url").notNull(),
+  order: sqliteInteger("order").default(0),
+});
+
+export const insertLessonSchema = createInsertSchema(lessons);
+export type InsertLesson = z.infer<typeof insertLessonSchema>;
+export type Lesson = typeof lessons.$inferSelect;

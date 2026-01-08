@@ -8,7 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import AdminBooks from "@/pages/AdminBooks";
-import CoursePlayer from "@/pages/CoursePlayer"; // <-- IMPORTANT
+import LessonManager from "@/pages/LessonManager";
 
 function Router() {
   return (
@@ -19,8 +19,8 @@ function Router() {
       {/* books dashboard */}
       <Route path="/books" component={AdminBooks} />
 
-      {/* NEW: course player sub page */}
-      <Route path="/courses/:slug" component={CoursePlayer} />
+      {/* Lesson Manager for each course */}
+      <Route path="/courses/:slug" component={LessonManager} />
 
       {/* 404 */}
       <Route component={NotFound} />
