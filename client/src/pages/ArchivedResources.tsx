@@ -41,41 +41,40 @@ export default function ArchivedResources() {
                 {archivedCourses?.length === 0 ? (
                     <p className="text-muted-foreground text-center">No archived courses.</p>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
                         {archivedCourses?.map((course) => (
-                            <div key={course.id} className="relative group opacity-80 hover:opacity-100 transition-opacity">
-                                <div className="relative overflow-hidden rounded-[2rem] bg-card border border-border/50 shadow-sm transition-all duration-300">
-                                    <div className="aspect-[4/3] relative overflow-hidden bg-muted">
-                                        {course.coverImage && (
-                                            <img
-                                                src={course.coverImage}
-                                                alt={course.title}
-                                                className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="p-6 space-y-3">
-                                        <h3 className="text-xl font-bold font-serif leading-tight">{course.title}</h3>
-                                        <p className="text-sm text-muted-foreground line-clamp-2">{course.description}</p>
-
-                                        <div className="flex items-center gap-4 pt-2 text-xs font-medium text-muted-foreground">
-                                            <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
-                                                <BookOpen className="w-3.5 h-3.5" />
-                                                <span>{course.lessons} Lessons</span>
-                                            </div>
+                            <div key={course.id} className="group flex flex-col gap-3 opacity-80 hover:opacity-100 transition-opacity">
+                                <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-zinc-900">
+                                    {course.coverImage && (
+                                        <img
+                                            src={course.coverImage}
+                                            alt={course.title}
+                                            className="w-full h-full object-cover grayscale transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex gap-3 mt-1">
+                                    <div className="flex-shrink-0">
+                                        <div className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center ring-1 ring-zinc-700">
+                                            <BookOpen className="w-5 h-5 text-zinc-400" />
                                         </div>
                                     </div>
+                                    <div className="flex-1 min-w-0 relative">
+                                        <h3 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{course.title}</h3>
+                                        <div className="text-[12px] text-muted-foreground">
+                                            <span>Archived Course • {course.lessons} lessons</span>
+                                        </div>
 
-                                    {/* Action Bar */}
-                                    <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                        <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={() => unarchiveMutation.mutate(course.id)}>
-                                            <RefreshCw className="w-3.5 h-3.5" />
-                                        </Button>
-                                        <Button size="icon" variant="destructive" className="h-8 w-8 rounded-full shadow-lg" onClick={() => {
-                                            if (confirm('This will explicitly delete the course. Are you sure?')) deleteMutation.mutate(course.id);
-                                        }}>
-                                            <Trash2 className="w-3.5 h-3.5" />
-                                        </Button>
+                                        <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                                            <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full bg-black/60 hover:bg-black/80" onClick={() => unarchiveMutation.mutate(course.id)}>
+                                                <RefreshCw className="w-3.5 h-3.5 text-white" />
+                                            </Button>
+                                            <Button size="icon" variant="destructive" className="h-7 w-7 rounded-full" onClick={() => {
+                                                if (confirm('Permanently delete?')) deleteMutation.mutate(course.id);
+                                            }}>
+                                                <Trash2 className="w-3.5 h-3.5" />
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

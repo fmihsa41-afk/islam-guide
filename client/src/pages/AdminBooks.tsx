@@ -122,22 +122,25 @@ export default function AdminBooks() {
     <div className="space-y-6 container mx-auto px-4 py-8">
       {/* PDF Viewer Dialog */}
       <Dialog open={!!viewingBook} onOpenChange={(open) => { if (!open) setViewingBook(null); }}>
-        <DialogContent className="max-w-5xl w-[95vw] h-[90vh] p-0 overflow-hidden bg-background">
-          <DialogHeader className="p-4 border-b">
-            <DialogTitle className="font-serif truncate pr-8">{viewingBook?.title}</DialogTitle>
-          </DialogHeader>
-          <div className="flex-1 w-full h-full pb-14">
-            {viewingBook?.fileUrl ? (
-              <iframe
-                src={`${viewingBook.fileUrl}#toolbar=0`}
-                className="w-full h-full border-none"
-                title={viewingBook.title}
-              />
-            ) : (
-              <div className="h-full flex items-center justify-center">
-                <p className="text-muted-foreground">Preview not available.</p>
-              </div>
-            )}
+        <DialogContent className="max-w-7xl w-[98vw] h-[96vh] p-0 overflow-hidden bg-black flex flex-col border-none ring-0 shadow-none">
+          <div className="flex flex-col h-full w-full">
+            <div className="bg-zinc-900 border-b border-zinc-800 p-3 flex items-center justify-between flex-shrink-0">
+              <h3 className="text-zinc-100 font-medium truncate text-sm">{viewingBook?.title}</h3>
+              <Button variant="ghost" size="sm" className="h-8 text-zinc-400 hover:text-white" onClick={() => setViewingBook(null)}>Close</Button>
+            </div>
+            <div className="flex-1 w-full bg-zinc-900 overflow-hidden">
+              {viewingBook?.fileUrl ? (
+                <iframe
+                  src={`${viewingBook.fileUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                  className="w-full h-full border-none"
+                  title={viewingBook.title}
+                />
+              ) : (
+                <div className="h-full flex items-center justify-center text-zinc-500">
+                  <p>Preview not available.</p>
+                </div>
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

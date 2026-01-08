@@ -1,7 +1,7 @@
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, PlayCircle, Plus, Edit, Trash2, Archive, Loader2, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, PlayCircle, Plus, Edit, Trash2, Archive, Loader2, ArrowRight, GraduationCap } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useState } from 'react';
@@ -131,78 +131,84 @@ export function Courses() {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
         {courses?.map((course) => (
           <div
             key={course.id}
-            className="group relative cursor-pointer"
+            className="group flex flex-col gap-3 cursor-pointer"
             onClick={(e) => {
               if ((e.target as HTMLElement).closest('button')) return;
-              navigate(`/courses/${course.slug}`);
+              if (course.slug) {
+                navigate(`/courses/${course.slug}`);
+              } else {
+                toast({ title: "Course link invalid", variant: "destructive" });
+              }
             }}
           >
-            {/* The "Shape" - organic rounded container */}
-            <div className="relative overflow-hidden rounded-[2rem] bg-card border border-border/50 shadow-sm transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5 group-hover:-translate-y-2">
-              <div className="aspect-[4/3] relative overflow-hidden bg-muted">
-                {course.coverImage ? (
-                  <img
-                    src={course.coverImage}
-                    alt={course.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-primary/5">
-                    <PlayCircle className="w-12 h-12 text-primary/20" />
-                  </div>
-                )}
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Thumbnail aspect-video */}
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#0F0F0F] hover:rounded-none transition-all duration-300 shadow-md">
+              {course.coverImage ? (
+                <img
+                  src={course.coverImage}
+                  alt={course.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-zinc-900">
+                  <PlayCircle className="w-12 h-12 text-zinc-700" />
+                </div>
+              )}
+
+              {/* Play Overlay */}
+              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="bg-black/60 backdrop-blur-sm p-4 rounded-full scale-90 group-hover:scale-100 transition-transform">
+                  <PlayCircle className="w-8 h-8 text-white fill-white/10" />
+                </div>
+              </div>
+            </div>
+
+            {/* Metadata Section */}
+            <div className="flex gap-3 mt-1">
+              <div className="flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                  <GraduationCap className="w-5 h-5 text-primary" />
+                </div>
               </div>
 
-              <div className="p-6 space-y-3">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-bold font-serif leading-tight group-hover:text-primary transition-colors">
-                    {course.title}
-                  </h3>
-                </div>
-                <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                  {course.description}
-                </p>
-
-                <div className="flex items-center gap-4 pt-2 text-xs font-medium text-muted-foreground">
-                  <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>{course.lessons} Lessons</span>
+              <div className="flex-1 min-w-0 pr-6 relative">
+                <h3 className="text-sm font-bold leading-tight line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+                  {course.title}
+                </h3>
+                <div className="flex flex-col text-[12px] text-muted-foreground font-medium">
+                  <div className="flex items-center gap-1">
+                    <span>Islamic Guidance</span>
+                    <span>•</span>
+                    <span>{course.lessons} lessons</span>
                   </div>
-                  <div className="flex items-center gap-1.5 bg-secondary/50 px-2.5 py-1 rounded-full">
-                    <Clock className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1 mt-0.5 opacity-80">
+                    <Clock className="w-3 h-3" />
                     <span>{course.duration}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* Admin Action Bar - sleek overlay */}
-              <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
-                  e.stopPropagation();
-                  setEditingCourse(course);
-                  setIsDialogOpen(true);
-                }}>
-                  <Edit className="w-3.5 h-3.5" />
-                </Button>
-                <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
-                  e.stopPropagation();
-                  archiveMutation.mutate(course.id);
-                }}>
-                  <Archive className="w-3.5 h-3.5" />
-                </Button>
-                <Button size="icon" variant="destructive" className="h-8 w-8 rounded-full shadow-lg" onClick={(e) => {
-                  e.stopPropagation();
-                  if (confirm('Are you sure?')) deleteMutation.mutate(course.id);
-                }}>
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
+                {/* Inline Action Buttons (YouTube behavior) */}
+                <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex flex-col gap-1 items-center">
+                    <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full hover:bg-secondary" onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingCourse(course);
+                      setIsDialogOpen(true);
+                    }}>
+                      <Edit className="w-3.5 h-3.5" />
+                    </Button>
+                    <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-destructive hover:bg-destructive/10" onClick={(e) => {
+                      e.stopPropagation();
+                      if (confirm('Delete this course?')) deleteMutation.mutate(course.id);
+                    }}>
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
