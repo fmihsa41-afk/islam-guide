@@ -364,7 +364,7 @@ Likewise: The universe depends on Allah. Allah depends on nothing.`;
                         >
                           <Sparkles className="w-8 h-8 text-primary-foreground" />
                         </motion.div>
-                        <h1 className="text-3xl font-bold font-serif">Welcome to all-Islam</h1>
+                        <h1 className="text-3xl font-bold font-serif">Welcome to Wadoo</h1>
                         <p className="text-sm text-muted-foreground">Made in KSA to people</p>
                       </div>
                     )}
