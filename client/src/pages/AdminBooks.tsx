@@ -128,12 +128,13 @@ export default function AdminBooks() {
               <h3 className="text-zinc-100 font-medium truncate text-sm">{viewingBook?.title}</h3>
               <Button variant="ghost" size="sm" className="h-8 text-zinc-400 hover:text-white" onClick={() => setViewingBook(null)}>Close</Button>
             </div>
-            <div className="flex-1 w-full bg-zinc-900 overflow-hidden">
+            <div className="flex-1 w-full bg-zinc-900 overflow-auto">
               {viewingBook?.fileUrl ? (
                 <iframe
-                  src={`${viewingBook.fileUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + viewingBook.fileUrl)}&embedded=true`}
                   className="w-full h-full border-none"
                   title={viewingBook.title}
+                  loading="lazy"
                 />
               ) : (
                 <div className="h-full flex items-center justify-center text-zinc-500">
